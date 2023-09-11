@@ -1,28 +1,45 @@
 import React from "react";
-import { Stack, Box, Text } from '@chakra-ui/react'
-
+import { Stack, Box, Text, Image, Flex } from '@chakra-ui/react'
+import myImage from '../../assets/pexels-ryutaro-tsukata-5473223-1.png'
 const Hero = () => {
   return (
-  <>
-  <Stack width="1320px" height="1600px" maxWidth="100%" background="#FFFFFF">
-    <Box width="1320px" height="766.03px" maxWidth="100%" />
-    <Text
+  <div className="navContainer flex justify-center w-screen">
+  <Stack >
+    <Box>
+    <Image  
+      // boxSize={{ base: "0px",sm: "50px", md: "75px", lg: "100px" }}
+      borderRadius={8}
+      objectFit='cover'
+      src={myImage}
+      alt='Massage Therapist'/>
+    <Box 
+    padding={0}>
+      <Text
       fontFamily="EB Garamond"
       fontWeight="bold"
-      fontSize="36px"
-      color="#FFFFFF"
-      width="1043px"
-      height="580px"
-      maxWidth="100%"
+      fontSize="26px"
+      color="#ffffff"
+      width='90%'
+      maxWidth="95vw"
       textAlign="center"
-    >
-      Welcome to Recovery Rx Massage, where healing and relaxation come together
-      to help you achieve optimal well-being. We understand the toll that
-      everyday stress, injuries, and physical ailments can take on your body and
-      mind. That's why our mission is to provide you with personalized massage
-      therapy treatments that promote recovery, relieve tension, and rejuvenate
-      your body.
-    </Text>
+      position="absolute"
+      top="15%"
+      left={{ base: "20%",sm: "20%", md: "5%", lg: "2.0%" }}
+      right="-15%"
+      
+      
+      
+      textShadow="1px 1px 1px rgba(255, 255, 255, 0.8), -1px -1px 1px rgba(0, 0, 0, 0.2),4px 4px 5px rgba(0, 0, 0, 0.5),1px 1px 2px rgba(0, 0, 0, 0.1)" // 3D letterpress
+      >
+        Welcome to Recovery Rx Massage, where healing and relaxation come together
+        to help you achieve optimal well-being. <br></br><br></br>  We understand the toll that
+        everyday stress, injuries, and physical ailments can take on your body and
+        mind. That's why our mission is to provide you with personalized massage
+        therapy treatments that promote recovery, relieve tension, and rejuvenate
+        your body.
+      </Text>
+    </Box>
+    </Box>
     <Box width="200px" height="200px" />
     <Text
       fontFamily="Noto Sans"
@@ -54,7 +71,7 @@ const Hero = () => {
       specific areas of concern and leaves you feeling invigorated and relaxed.
     </Text>
   </Stack>
-  </>
+  </div>
   )
   }
 

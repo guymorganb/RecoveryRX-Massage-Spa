@@ -11,18 +11,17 @@ import { Box, Text, StackDivider, HStack, VStack, Link, Image } from '@chakra-ui
 */
 const Nav = () => {
   return (
-<div className="navContainer flex justify-center w-screen">
-  <VStack m={1}
-  divider={<StackDivider borderColor='black.200' />}
+<Box className="navContainer">
+  <VStack
+  width="100%"
   padding={1}
-
   borderRadius={4}
   backgroundColor={{ base: 'beige', md: 'white', lg: "white" }}>
     <Box >
       <HStack >
         <Box>
           <Image  
-            boxSize={{ base: "0px",sm: "50px", md: "75px", lg: "100px" }}
+            boxSize={{ base: "0px",sm: "75px", md: "100px", lg: "100px" }}
             borderRadius={8}
             objectFit='cover'
             src='https://bit.ly/dan-abramov'
@@ -34,7 +33,7 @@ const Nav = () => {
             fontWeight="Regular"
             fontSize={{ base: "18px", md: "20px", lg: "20px" }}
             color="#000000"
-            width={{ base: "80%", /* 0-48em */ md: "100%", /* 48em-80em, */ xl: "100%", /* 80em+ */ }}
+            width={{ base: "100%", /* 0-48em */ md: "100%", /* 48em-80em, */ xl: "100%", /* 80em+ */ }}
             _hover={{ 
               boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)',  // shadow on hover
               borderRadius: 4,
@@ -115,17 +114,17 @@ const Nav = () => {
             borderColor: '#bec3c9',
             boxShadow: '0 2px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(88, 144, 255, 0.1)'  // shadow when pressed
           }}>
-            Book Now
+            <Link color='white.500' href='#'>Book Now</Link>
         </Box>
       </HStack>
-      <Box h='10px' bg='white.100' m={5}>
+      <Box h='0px' bg='white.100' m={4}>
       <hr></hr>
       </Box>
      
     </Box>
 
   </VStack>
-  </div>
+  </Box>
    
   );
 };
