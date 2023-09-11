@@ -1,0 +1,38 @@
+.glossy-medium-base {
+  align-items: flex-start;
+  background-color: #407a10;
+  border-radius: 8px;
+  box-shadow: inset 0px -8px 10px #00000033, inset 0px 4px 4px #ffffff80;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 12px 24px;
+  position: relative;
+}
+
+.glossy-medium-base .content {
+  align-items: flex-start;
+  align-self: stretch;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.glossy-medium-base .BUTTON {
+  color: #ffffff;
+  font-family: "Inter", Helvetica;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.glossy-medium-base .icon-medium {
+  height: 24px !important;
+  position: relative !important;
+  width: 24px !important;
+}
