@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, StackDivider, HStack, VStack, Link, Image } from '@chakra-ui/react'
+import { Box, Text, HStack, VStack, Link, Image } from '@chakra-ui/react'
 
 /* BreakPoint Ref
   base: "0em", // 0px
@@ -13,12 +13,17 @@ const Nav = () => {
   return (
 <Box className="navContainer">
   <VStack
-  width="100%"
   padding={1}
   borderRadius={4}
-  backgroundColor={{ base: 'beige', md: 'white', lg: "white" }}>
-    <Box >
-      <HStack >
+  backgroundColor={{ base: 'white', md: 'white', lg: "white" }}>
+    <Box
+    width='100%'
+    paddingLeft={{base:'75%', sm: '30%', md:'5%', lg:'.0001%', xl:'.0001%'}}>
+      <HStack
+      justifyContent="center"
+      alignItems='center'
+      width='100%'
+      paddingLeft={{base:'75%', sm: '20%', md:'5%', lg:'.0001%', xl:'.0001%'}}>
         <Box>
           <Image  
             boxSize={{ base: "0px",sm: "75px", md: "100px", lg: "100px" }}
@@ -31,7 +36,7 @@ const Nav = () => {
           <Text
             fontFamily="Noto Sans"
             fontWeight="Regular"
-            fontSize={{ base: "18px", md: "20px", lg: "20px" }}
+            fontSize={{ base: "25px", md: "25px", lg: "32px" }}
             color="#000000"
             width={{ base: "100%", /* 0-48em */ md: "100%", /* 48em-80em, */ xl: "100%", /* 80em+ */ }}
             _hover={{ 
@@ -44,12 +49,14 @@ const Nav = () => {
           </Text>
         </Box>
       <Box 
-      display={{ base: 'flexWrap', md: 'flex', lg: "100%" }}>
+      display={{ md: 'flex', lg: "100%", lg:'flex' }}
+      alignItems='center'>
         <Box>
           <Text
             fontFamily="Noto Sans"
             fontWeight="regular"
-            fontSize={{ base: "14px", md: "16px", lg: "16px" }}
+            fontSize={{ base: "20px", md: "18px", lg: "20px" }}
+            margin="2"
             color="#000000"
             width="75px"
             _hover={{ 
@@ -64,9 +71,10 @@ const Nav = () => {
           <Text
             fontFamily="Noto Sans"
             fontWeight="regular"
-            fontSize={{ base: "14px", md: "16px", lg: "16px" }}
+            fontSize={{ base: "14px", md: "18px", lg: "20px" }}
+            margin="2"
             color="#000000"
-            width="75px"
+            width="80px"
             _hover={{ 
               boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)',  // shadow on hover
               borderRadius: 4,
@@ -79,7 +87,8 @@ const Nav = () => {
           <Text
             fontFamily="Noto Sans"
             fontWeight="regular"
-            fontSize={{ base: "14px", md: "16px", lg: "16px" }}
+            fontSize={{ base: "14px", md: "18px", lg: "20px" }}
+            margin="2"
             color="#000000"
             width="75px"
             _hover={{ 
@@ -117,12 +126,11 @@ const Nav = () => {
             <Link color='white.500' href='#'>Book Now</Link>
         </Box>
       </HStack>
-      <Box h='0px' bg='white.100' m={4}>
+      <Box h='0px' bg='white.100' m={4}
+      paddingLeft={{base:'75%', sm: '20%', md:'5%', lg:'.0001%', xl:'.0001%'}}>
       <hr></hr>
       </Box>
-     
     </Box>
-
   </VStack>
   </Box>
    
