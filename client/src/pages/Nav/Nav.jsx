@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Text, HStack, VStack, Link, Image, Flex } from '@chakra-ui/react';
-
+import line from '../../assets/line-1.svg'
 const Nav = () => {
   return (
     <Box className="navContainer" width="100%" display="flex" justifyContent="center" >
@@ -77,7 +77,7 @@ const Nav = () => {
             </Box>
           </HStack>
         </HStack>
-        <Box bg='white.100' my={4}>
+        <Box bg='white.100' width='100%' marginBottom={3}>
           <hr></hr>
         </Box>
       </VStack>
