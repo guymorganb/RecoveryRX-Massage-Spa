@@ -2,20 +2,25 @@ import { useState } from 'react'
 import Nav from '../src/pages/Nav/Nav'
 import Hero from '../src/pages/Hero/Hero'
 import { MassageSelector } from '../src/pages/MassageSelector/massageSelector'
-import './App.css'
+import {UserPreferenceProvider} from './pages/MassageSelector/userContext'
+//import {Frame} from './pages/admin/addUpdateServices'
+import {Services} from './pages/admin/services'
+import { AddService } from './pages/admin/addUpdateServices'
+
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-      <Nav />
+    <UserPreferenceProvider>
+      
+      {/* <Nav />
       <Hero />
-      <MassageSelector />
-      </div>
- 
-    </>
+      <MassageSelector /> */}
+      <AddService />
+      <Services />
+    </UserPreferenceProvider >
   )
 }
 

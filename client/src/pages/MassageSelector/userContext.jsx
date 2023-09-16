@@ -4,7 +4,8 @@ const UserPreferenceContext = React.createContext();
 
 export const useUserPreferenceContext = () => useContext(UserPreferenceContext)
 
-const userPreferenceProvider = ({ children })=>{
+export const UserPreferenceProvider = ({ children })=>{
+    
     const userPreference = {
         clientName: "",
         experience: "", 
@@ -12,7 +13,8 @@ const userPreferenceProvider = ({ children })=>{
         intensity: "",     
         lookingFor: "",    
         wheresYourPain: "" 
-    }
+    };
+
 
     return (
         <UserPreferenceContext.Provider value={{userPreference}}>

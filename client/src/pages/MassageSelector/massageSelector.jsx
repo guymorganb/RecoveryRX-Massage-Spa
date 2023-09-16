@@ -1,36 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Stack, Flex, Grid, Select, HStack, Text, Box, Image, Checkbox } from '@chakra-ui/react'
 import massageOptions from '../../utils/massageOptions/massageOptions.json' 
-
+// import the context hook
+import { useUserPreferenceContext } from './userContext'
+import {reducer} from './reducers'
+import {ADD_EXPERIENCE, ADD_MASSAGE_TYPE, ADD_INTENSITY, ADD_LOOKING_FOR, ADD_WHERESYOUR_PAIN} from './actions'
 
 
 export const MassageSelector = () => {
+const initialState = useUserPreferenceContext();
+
+// setting up the use reducer hook
+const [state, dispatch] = useReducer(reducer, initialState);
 
 
-    const [userPreference, setUserPreference] = useState({
-        clientName: "",
-        experience: "", 
-        massageType: "",   
-        intensity: "",     
-        lookingFor: "",    
-        wheresYourPain: "" 
-    });
-
+// use effect dependency array is being used to call getRecomendations()
     useEffect(()=>{
         getRecommendations()
-    },[userPreference])
+    },[state])
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     
     // function logic handling the changed state of the select box
     const getRecommendations = () => {
+        console.log(state)
         // declare an array to push massageOption to
         let recommendedMassages = [];
         // get the value of the select box
-        const experience = userPreference.experience;
-        const intensity = userPreference.intensity
-        const lookingFor = userPreference.lookingFor
-        const pain = userPreference.wheresYourPain
+        const experience = state.experience;
+        const intensity = state.intensity
+        const lookingFor = state.lookingFor
+        const pain = state.wheresYourPain
         
       
         
@@ -98,51 +98,56 @@ export const MassageSelector = () => {
           
             setSelectedOptions(recommendedMassages);
         }
-        
+        console.log(recommendedMassages)
     }
     // the function call on change of the select box
     const handleChange = (event) => {
         
         if(event.target.name == 'experience'){
-            setUserPreference(prev => ({
-                ...prev, 
-                experience: event.target.value
-            }));
+            dispatch({ type: ADD_EXPERIENCE, payload: event.target.value})
+            // setUserPreference(prev => ({
+            //     ...prev, 
+            //     experience: event.target.value
+            // }));
         }
         if(event.target.name == 'intensity'){
-            setUserPreference(prev => ({
-                ...prev, 
-                intensity: event.target.value
-            }));
+            dispatch({ type: ADD_INTENSITY, payload: event.target.value})
+            // setUserPreference(prev => ({
+            //     ...prev, 
+            //     intensity: event.target.value
+            // }));
         }
         if(event.target.name == 'lookingFor'){
-            setUserPreference(prev => ({
-                ...prev, 
-                lookingFor: event.target.value
-            }));
+            dispatch({ type: ADD_LOOKING_FOR, payload: event.target.value})
+            // setUserPreference(prev => ({
+            //     ...prev, 
+            //     lookingFor: event.target.value
+            // }));
         }
         if(event.target.name == 'pain'){
-            setUserPreference(prev => ({
-                ...prev, 
-                wheresYourPain: event.target.value
-            }));
+            dispatch({ type: ADD_WHERESYOUR_PAIN, payload: event.target.value})
+            // setUserPreference(prev => ({
+            //     ...prev, 
+            //     wheresYourPain: event.target.value
+            // }));
         }
     }
 
-    const [checkedMassages, setCheckedMassages] = useState([]);
+    
     
     const handleCheckboxChange = (option) => {
         // Check by option name
-        if (checkedMassages.some(massage => massage.name === option.name)) {
-            setCheckedMassages(checked => checked.filter(item => item.name !== option.name));
-        } else {
-            setCheckedMassages(checked => [...checked, option]);
-        }
-    
-        setUserPreference({
-            ...userPreference,
-            massageType: option.name
-        });
+        /// add a toggle for the checkboxes so only one is checked
+       // if (checkedMassages.some(massage => massage.name === option.name)) {
+           // setCheckedMassages(checked => checked.filter(item => item.name !== option.name));
+        //} else {
+         //   setCheckedMassages(checked => [...checked, option]);
+        //}
+        dispatch({ type: ADD_MASSAGE_TYPE, payload: option.name})
+        // setUserPreference({
+        //     ...userPreference,
+        //     massageType: option.name
+        // });
     };
 
 
@@ -221,7 +226,10 @@ export const MassageSelector = () => {
             _hover={{
                 boxShadow: "2px 2px 5px #d1d1d1, -2px -2px 5px #ffffff"
             }}>
-            <Flex justifyContent="center" alignItems="center" height="150px">
+            <Flex 
+                justifyContent="center" 
+                alignItems="center" 
+                height="150px">
                 <Image  
                     boxSize={{ base: "75px", sm: "100px", md: "125px", lg: "125px", xl: "150px" }}
                     borderRadius="8px"
@@ -258,13 +266,12 @@ export const MassageSelector = () => {
                 bg='gray.300'
                 borderRadius='4'
                 onChange={() => handleCheckboxChange(option)}
-                isChecked={checkedMassages.some(massage => massage.name === option.name)}>
+                isChecked={state.massageType === option.name}>
                 Select
             </Checkbox>
                 </Box>
             ))}
         </Grid>
-
         </Box>
         </Flex>
     )
