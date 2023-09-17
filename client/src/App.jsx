@@ -8,6 +8,8 @@ import {Services} from './pages/admin/services'
 import { AddService } from './pages/admin/addUpdateServices'
 
 
+import Booking from '../src/pages/Booking'
+import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,10 +19,9 @@ function App() {
       
       {/* <Nav />
       <Hero />
-      <MassageSelector /> */}
-      <AddService />
-      <Services />
-    </UserPreferenceProvider >
+      <Booking />
+      </div>
+    </>
   )
 }
 
