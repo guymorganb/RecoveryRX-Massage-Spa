@@ -62,12 +62,20 @@ export const Services = () => {
             title: 'Hot Stones',
             description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
         },
+        {
+            title: 'Hot Stone',
+            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
+        },
+        {
+            title: 'Stones',
+            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
+        },
       
     ];
 
     return (
         <Box bgColor="#ffffff" w="100%" d="flex" justifyContent="center" height='60vh'> 
-        <Box textAlign='center' fontSize="34px" mt={20} mb={16}> Services </Box>
+        <Box textAlign='center' fontSize="34px" mt={15} mb={16}> Services </Box>
             <VStack bgColor="#ffffff" spacing={4} display='flex' justify='center' className="100" >
 
                 {services.map(service => (
