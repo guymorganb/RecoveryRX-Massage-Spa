@@ -25,11 +25,11 @@ function Calendar() {
     <div>
       <Box
       py={'2em'}
-      w={'75%'}
+      w={{ sm: "95%", md: "85%", xl: "75%" }}
       mx={'auto'}
       >
         <Text
-        fontSize={'2em'}
+        fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}
         py={'1em'}
         >
           Step 1: Select a Date
@@ -38,7 +38,7 @@ function Calendar() {
         textAlign={'center'}
         backgroundColor={'#fbdebb'}
         borderRadius={'1em'}
-        pb={'4em'}
+        p={'4em'}
         >
         <SimpleGrid 
         columns={3} 
@@ -54,7 +54,7 @@ function Calendar() {
                 color={'white'}
                 colorScheme={'blackAlpha'}
                 variant={'ghost'}
-                fontSize={'2em'}
+                fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}
                 onClick={() => {
                   if (monthIndex === 0) {
                     setMonthIndex(11);
@@ -76,7 +76,7 @@ function Calendar() {
                 color={'white'}
                 colorScheme={'blackAlpha'}
                 variant={'ghost'}
-                fontSize={'2em'}
+                fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}
                 onClick={() => {
                   if (monthIndex === 11) {
                     setMonthIndex(0);
@@ -99,25 +99,25 @@ function Calendar() {
           </Box>
           <Box>
             <Text
-              fontSize={'3em'}
+              fontSize={{ sm: "1.5em", md: "2.5em", xl: "3em" }}
             >
               {month}
             </Text>
           </Box>
           <Box>
           <Text
-            fontSize={'3em'}
+            fontSize={{ sm: "1.5em", md: "2.5em", xl: "3em" }}
           >
             {year}
           </Text>
           </Box>
         </SimpleGrid>
-        <SimpleGrid columns={7} spacing={'2em'} py={'1em'} fontSize={'2em'}>
+        <SimpleGrid columns={7} spacing={'2em'} py={'1em'} fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}>
         {weekdaysAbbr.map((item,index)=>{
          return <Box key={index}>{item}</Box>
         })}
         </SimpleGrid>
-        <SimpleGrid columns={7} spacing={'2em'} fontSize={'2em'}>
+        <SimpleGrid columns={7} spacing={'2em'} fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}>
         {items.map((item,index)=>{
           if (item === 0) {
             item = '';
