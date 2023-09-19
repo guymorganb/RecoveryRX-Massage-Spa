@@ -215,7 +215,8 @@ const [state, dispatch] = useReducer(reducer, initialState);
             templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }} 
             gap={6}> 
     {selectedOptions.map((option, index) => (
-        <Box 
+        <Box
+            className="card" 
             margin={1} 
             key={index} 
             padding={4}
@@ -241,7 +242,8 @@ const [state, dispatch] = useReducer(reducer, initialState);
                         transform: "scale(1.05)"
                     }}/>
             </Flex>
-            <Text 
+            <Text
+                className="title" 
                 fontWeight="bold"
                 fontSize="1.25rem"
                 mb="1rem">
