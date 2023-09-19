@@ -20,8 +20,8 @@ function App() {
       <Nav />
       <Hero />
       <MassageSelector />
-      {/* <AddService />
-      <Services /> */}
+       {/* <AddService /> */}
+      <Services /> 
       <Booking />
 
     </UserPreferenceProvider >
