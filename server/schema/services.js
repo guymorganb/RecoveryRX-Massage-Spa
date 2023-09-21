@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 import { Schema, model } from "mongoose";
 
-const { Schema } = mongoose;
-
 const priceSchema = new Schema({
     min60: {
         type: String,

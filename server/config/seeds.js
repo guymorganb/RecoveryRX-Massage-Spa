@@ -1,9 +1,13 @@
-import connectDB from './connection'
-import Service from '../schema/services'
+import Service from '../schema/services.js'
+import mongoose from "mongoose";
 
-connectDB.once('open', async () => {
+
+
+const seedDatabase = async () => {
     
-    const services = await Service. insertMany([
+    try{
+        await Service.deleteMany({});
+    const services = await Service.insertMany([
         {
             title: "Swedish Massage",
             description: "Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension. It is a gentle massage that is suitable for people of all ages and fitness levels. Swedish massage can help to improve circulation, reduce stress, and relieve pain. It can also help to improve sleep and boost energy levels.",
@@ -35,5 +39,13 @@ connectDB.once('open', async () => {
             image: "https://imgur.com/U5vgIUp",
         }
     ])
-
-})
+        console.log('Seeding completed!');
+        mongoose.connection.close();
+    }catch(error){
+        console.error('Error during seeding:', error);
+        mongoose.connection.close();
+    }finally {
+        mongoose.connection.close();
+      }
+}
+export default seedDatabase;

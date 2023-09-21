@@ -6,6 +6,7 @@ import typeDefs from './schema/typeDefs.js'
 import resolvers from './schema/resolvers.js'
 //import { auth } from './utils/authenticate.js'
 import connectDB from './config/connection.js'
+import seedDatabase from './config/seeds.js'; 
 
 config();
 
@@ -29,7 +30,7 @@ app.use(express.json());
     try {
         // Connect to MongoDB
       await connectDB();
-      
+      await seedDatabase(); 
         // Apollo Server setup
       await server.start();
       server.applyMiddleware({ app });
