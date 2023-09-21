@@ -1,13 +1,50 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Stack, Flex, Grid, Select, HStack, Text, Box, Image, Checkbox } from '@chakra-ui/react'
-import massageOptions from '../../utils/massageOptions/massageOptions.json' 
+// import massageOptions from '../../utils/massageOptions/massageOptions.json' 
 // import the context hook
 import { useUserPreferenceContext } from './userContext'
 import {reducer} from './reducers'
 import {ADD_EXPERIENCE, ADD_MASSAGE_TYPE, ADD_INTENSITY, ADD_LOOKING_FOR, ADD_WHERESYOUR_PAIN} from './actions'
-
+import { useQuery, useLazyQuery } from '@apollo/client';
+import {GET_SERVICES} from '../../utils/queries.jsx'
+import { get, set } from 'idb-keyval';
 
 export const MassageSelector = ({setTitle}) => {
+// const { loading, error, data } = useQuery(GET_SERVICES); // fetches data when component mounts
+const [getServices, { loading, error, data }] = useLazyQuery(GET_SERVICES);
+const [allServices, setAllServices] = useState([]); 
+
+React.useEffect(() => {
+    const fetchData = async () => {
+        const storedServices = await get('servicesData');
+        const lastFetchTime = await get('lastFetchTime');
+        const currentTime = new Date().getTime();
+
+        if (storedServices && lastFetchTime && (currentTime - lastFetchTime <= 1 * 60 * 60 * 1000)) {
+            // Data exists in IndexedDB and is less than an hour old
+            setAllServices(storedServices);
+        } else {
+            getServices() // the call to GraphQL backend through lazyQuery
+        }
+    };
+    fetchData();
+}, []);
+
+React.useEffect(() => {
+    const fetchLastTime = async () => {
+        if (data && data.services) {
+            setAllServices(data.services); // Update state
+            set('servicesData', data.services); // Update IndexedDB
+            const currentTime = new Date().getTime();
+            set('lastFetchTime', currentTime); // Update fetch time in IndexedDB
+            const lastFetchTime = await get('lastFetchTime');
+            console.log("Last Fetch Time:", lastFetchTime);
+        }
+    }
+    fetchLastTime();
+}, [data]);
+
+console.log(allServices);
 const initialState = useUserPreferenceContext();
 
 // setting up the use reducer hook
@@ -39,67 +76,67 @@ const [state, dispatch] = useReducer(reducer, initialState);
             // ensure the array is empty
             recommendedMassages = [];
             // push to the array
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
+            recommendedMassages.push(allServices[0]); // Swedish massage
         
             // set the state from the array contents
             setSelectedOptions(recommendedMassages);
         } 
         if (intensity === "Soft" && experience === 'No') { 
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
-            recommendedMassages.push(massageOptions[4]); // Hot stones
+            recommendedMassages.push(allServices[0]); // Swedish massage
+            recommendedMassages.push(allServices[4]); // Hot stones
         
             setSelectedOptions(recommendedMassages);
         }
         if (intensity === "Medium" && experience === 'No') { 
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
-            recommendedMassages.push(massageOptions[1]); // Sports massage
-            recommendedMassages.push(massageOptions[4]); // Hot stones
+            recommendedMassages.push(allServices[0]); // Swedish massage
+            recommendedMassages.push(allServices[1]); // Sports massage
+            recommendedMassages.push(allServices[4]); // Hot stones
          
             setSelectedOptions(recommendedMassages);
         }     
         if (intensity === "Hard" && experience === 'No') { 
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[1]); // Sports massage
-            recommendedMassages.push(massageOptions[2]); // Deep Tissue
-            recommendedMassages.push(massageOptions[3]); // Cupping
+            recommendedMassages.push(allServices[1]); // Sports massage
+            recommendedMassages.push(allServices[2]); // Deep Tissue
+            recommendedMassages.push(allServices[3]); // Cupping
         
             setSelectedOptions(recommendedMassages);
         }
         if(experience === "Yes"){
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
-            recommendedMassages.push(massageOptions[1]); // Sports massage
-            recommendedMassages.push(massageOptions[4]); // Hot stones
+            recommendedMassages.push(allServices[0]); // Swedish massage
+            recommendedMassages.push(allServices[1]); // Sports massage
+            recommendedMassages.push(allServices[4]); // Hot stones
          
             setSelectedOptions(recommendedMassages);
         }
         if(intensity === "Soft" && experience === "Yes"){
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
-            recommendedMassages.push(massageOptions[1]); // Sports massage
+            recommendedMassages.push(allServices[0]); // Swedish massage
+            recommendedMassages.push(allServices[1]); // Sports massage
          
             setSelectedOptions(recommendedMassages);
         }
         if(intensity === "Medium" && experience === "Yes"){
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[0]); // Swedish massage
-            recommendedMassages.push(massageOptions[1]); // Sports massage
-            recommendedMassages.push(massageOptions[3]); // Cupping
+            recommendedMassages.push(allServices[0]); // Swedish massage
+            recommendedMassages.push(allServices[1]); // Sports massage
+            recommendedMassages.push(allServices[3]); // Cupping
        
             setSelectedOptions(recommendedMassages);
         }
         if(intensity === "Hard" && experience === "Yes"){
             recommendedMassages = [];
-            recommendedMassages.push(massageOptions[1]); // Sports massage
-            recommendedMassages.push(massageOptions[2]); // Deep Tissue
-            recommendedMassages.push(massageOptions[3]); // Cupping
-            recommendedMassages.push(massageOptions[4]); // Hot stones
+            recommendedMassages.push(allServices[1]); // Sports massage
+            recommendedMassages.push(allServices[2]); // Deep Tissue
+            recommendedMassages.push(allServices[3]); // Cupping
+            recommendedMassages.push(allServices[4]); // Hot stones
           
             setSelectedOptions(recommendedMassages);
         }
-        console.log(recommendedMassages)
+        
     }
     // the function call on change of the select box
     const handleChange = (event) => {
