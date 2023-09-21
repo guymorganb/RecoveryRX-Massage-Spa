@@ -7,6 +7,7 @@ import resolvers from './schema/resolvers.js'
 //import { auth } from './utils/authenticate.js'
 import connectDB from './config/connection.js'
 import seedDatabase from './config/seeds.js'; 
+import routes from './controllers/api.js';
 
 config();
 
@@ -23,8 +24,9 @@ const server = new ApolloServer({
   });
 
   // Express Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(routes);
 
 (async () => {
     try {

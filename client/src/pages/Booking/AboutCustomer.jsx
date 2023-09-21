@@ -1,5 +1,12 @@
 import React, {useState} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
+async function submitData(event) {
+  event.preventDefault();
+  const response = await fetch('/', {
+    method: 'GET',
+  });
+  console.log(response);
+}
 
 function AboutCustomer({title}) {
   const nameRegex = /[a-zA-Z]{3,}/;
@@ -128,7 +135,7 @@ function AboutCustomer({title}) {
               <option value='no'>No</option>
             </Select>
           </FormControl>
-          <Button backgroundColor={'#5e6d55'} color={'white'}>Submit</Button>
+          <Button backgroundColor={'#5e6d55'} color={'white'} onClick={submitData}>Submit</Button>
         </Box>
       </Box>
     </div>
