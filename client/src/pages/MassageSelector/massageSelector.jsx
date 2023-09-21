@@ -7,7 +7,7 @@ import {reducer} from './reducers'
 import {ADD_EXPERIENCE, ADD_MASSAGE_TYPE, ADD_INTENSITY, ADD_LOOKING_FOR, ADD_WHERESYOUR_PAIN} from './actions'
 
 
-export const MassageSelector = () => {
+export const MassageSelector = ({setTitle}) => {
 const initialState = useUserPreferenceContext();
 
 // setting up the use reducer hook
@@ -16,7 +16,8 @@ const [state, dispatch] = useReducer(reducer, initialState);
 
 // use effect dependency array is being used to call getRecomendations()
     useEffect(()=>{
-        getRecommendations()
+        getRecommendations();
+        getTitle();
     },[state])
 
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -150,7 +151,19 @@ const [state, dispatch] = useReducer(reducer, initialState);
         // });
     };
 
-
+    function getTitle() {
+      let results;
+      const cards = document.getElementsByClassName('card');
+      const cardsArr = Array.from(cards);
+      cardsArr.forEach((card) => {
+        const s = card.querySelectorAll('.check');
+        if (s[0].firstChild.checked) {
+          const t = card.querySelectorAll('.title');
+          results = t[0].innerText;
+          setTitle(results);
+        }
+      })
+    }
 
     return (
     <Flex align="center" justify="start" minHeight="100vh" direction="column" >
@@ -264,6 +277,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
             </Text>
             
             <Checkbox 
+                className="check"
                 mt={2}
                 bg='gray.300'
                 borderRadius='4'

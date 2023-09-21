@@ -1,41 +1,35 @@
 import React, {useState} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
 
-function AboutCustomer() {
+function AboutCustomer({title}) {
+  const nameRegex = /[a-zA-Z]{3,}/;
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const [emailError, setEmailError] = useState(false);
+
   const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-  const [title, setTitle] = useState('');
-  let phoneError = false;
+  const [phoneError, setPhoneError] = useState(false);
 
-  const cards = {
-    card1: {
-      title: 'Massage 1',
-      selected: false
-    }, 
-    card2: {
-      title: 'Massage 2',
-      selected: false
-    },
-    card3: {
-      title: 'Massage 3',
-      selected: false
-    },
-  };
+  function handleFNameInput(event) {
+    const result = nameRegex.test(event.target.value);
+    (!result) ? setFirstNameError(true) : setFirstNameError(false);
+  }
 
-  function getSelected() {
-    const cardsArr = Object.entries(cards);
-    let result;
-    cardsArr.forEach((card) => {
-      if (card[1].selected === true) {
-        result = card[1].title;
-        setTitle(result);
-      }
-    })
-    console.log('Changing');
+  function handleLNameInput(event) {
+    const result = nameRegex.test(event.target.value);
+    (!result) ? setLastNameError(true) : setLastNameError(false);
+  }
+
+  function handleEmailInput(event) {
+    const result = emailRegex.test(event.target.value);
+    (!result) ? setEmailError(true) : setEmailError(false);
   }
 
   function handlePhoneInput(event) {
     const result = phoneRegex.test(event.target.value);
-    console.log(result);
+    (!result) ? setPhoneError(true) : setPhoneError(false);
   }
 
   return (
@@ -57,7 +51,6 @@ function AboutCustomer() {
         borderRadius={'1em'}
         py={'10em'}
         px={'10em'}
-        onChange={getSelected}
         >
           <Text
           pb={'1.5em'}
@@ -69,27 +62,46 @@ function AboutCustomer() {
           <FormControl
           color={'black'}
           pb={'1.5em'}
+          isInvalid={firstNameError}
           >
-            <Input type='text' placeholder="First Name" backgroundColor={'white'}/>
+            <Input type='text' placeholder="First Name" backgroundColor={'white'} onChange={handleFNameInput}/>
+            {!firstNameError ? (
+              <div></div>
+            ) : (
+              <FormErrorMessage>Invalid Name</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl
           color={'black'}
           pb={'1.5em'}
+          isInvalid={lastNameError}
           >
-            <Input type='text' placeholder="Last Name" backgroundColor={'white'}/>
+            <Input type='text' placeholder="Last Name" backgroundColor={'white'} onChange={handleLNameInput}/>
+            {!lastNameError ? (
+              <div></div>
+            ) : (
+              <FormErrorMessage>Invalid Name</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl
           color={'black'}
           pb={'1.5em'}
+          isInvalid={emailError}
           >
-            <Input type='email' placeholder="Email" backgroundColor={'white'}/>
+            <Input type='email' placeholder="Email" backgroundColor={'white'} onChange={handleEmailInput}/>
+            {!emailError ? (
+              <div></div>
+            ) : (
+              <FormErrorMessage>Invalid Email Address</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl
           color={'black'}
           pb={'1.5em'}
+          isInvalid={phoneError}
           >
             <Input type='tel' placeholder="Phone Number" backgroundColor={'white'} onChange={handlePhoneInput}/>
-            {phoneError ? (
+            {!phoneError ? (
               <div></div>
             ) : (
               <FormErrorMessage>Invalid Phone Number</FormErrorMessage>
