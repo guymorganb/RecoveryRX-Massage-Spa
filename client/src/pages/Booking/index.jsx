@@ -1,8 +1,9 @@
 import Title from "./Title";
 import Calendar from "./Calendar";
+import AboutCustomer from "./AboutCustomer";
 import { Box } from "@chakra-ui/react";
 
-function Booking() {
+function Booking({title}) {
   return ( 
     <div>
       <Box
@@ -12,6 +13,7 @@ function Booking() {
       >
         <Title />
         <Calendar />
+        <AboutCustomer title={title}/>
       </Box>
     </div>
   );
