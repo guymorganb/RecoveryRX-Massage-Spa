@@ -30,6 +30,7 @@ app.use(express.json());
     try {
         // Connect to MongoDB
       await connectDB();
+   
       await seedDatabase(); 
         // Apollo Server setup
       await server.start();

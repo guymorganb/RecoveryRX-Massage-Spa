@@ -55,6 +55,5 @@ const resolvers = {
       }
     },
   }
-};  // <-- This was missing
-
+}; 
 export default resolvers;

@@ -40,12 +40,9 @@ const seedDatabase = async () => {
         }
     ])
         console.log('Seeding completed!');
-        mongoose.connection.close();
+       
     }catch(error){
         console.error('Error during seeding:', error);
-        mongoose.connection.close();
-    }finally {
-        mongoose.connection.close();
-      }
+    }
 }
 export default seedDatabase;

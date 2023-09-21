@@ -2,8 +2,21 @@ import React from "react";
 import { Stack, VStack, Box, Text, Image, Link } from '@chakra-ui/react'
 import myImage from '../../assets/pexels-ryutaro-tsukata-5473223-1.png'
 import myImage2 from '../../assets/1-1.png'
+import { useQuery } from '@apollo/client';
+import {GET_SERVICES} from '../../utils/queries.jsx'
+
 
 const Hero = () => {
+  const { loading, error, data } = useQuery(GET_SERVICES);
+
+  React.useEffect(() => {
+    if (data && data.services) {
+      // Saving the services data to local storage
+      localStorage.setItem('servicesData', JSON.stringify(data.services));
+    }
+  }, [data]);
+
+  
   return (
   <Box className="navContainer">
   <Stack >

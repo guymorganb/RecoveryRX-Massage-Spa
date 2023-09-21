@@ -235,8 +235,9 @@ const [state, dispatch] = useReducer(reducer, initialState);
                     boxSize={{ base: "75px", sm: "100px", md: "125px", lg: "125px", xl: "150px" }}
                     borderRadius="8px"
                     objectFit="cover"
-                    src={option.img}
-                    alt={option.name}
+                    id={option.id}
+                    src={option.image}
+                    alt={option.title}
                     transition="transform 0.3s ease-in-out"
                     _hover={{
                         transform: "scale(1.05)"
@@ -247,7 +248,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
                 fontWeight="bold"
                 fontSize="1.25rem"
                 mb="1rem">
-                {option.name}
+                {option.title}
             </Text>
             <hr></hr>
             <Text 
