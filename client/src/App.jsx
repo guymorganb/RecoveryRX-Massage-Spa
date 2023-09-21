@@ -12,17 +12,17 @@ import Booking from '../src/pages/Booking'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [title, setTitle] = useState('');
   
   return (
     <UserPreferenceProvider>
       
       <Nav />
       <Hero />
-      <MassageSelector />
-       {/* <AddService /> */}
-      <Services /> 
-      <Booking />
+      <MassageSelector setTitle={setTitle} />
+      {/* <AddService />
+      <Services /> */}
+      <Booking title={title}/>
 
     </UserPreferenceProvider >
   )
