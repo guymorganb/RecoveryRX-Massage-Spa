@@ -8,11 +8,14 @@ import {ADD_EXPERIENCE, ADD_MASSAGE_TYPE, ADD_INTENSITY, ADD_LOOKING_FOR, ADD_WH
 import { useQuery, useLazyQuery } from '@apollo/client';
 import {GET_SERVICES} from '../../utils/queries.jsx'
 import { get, set } from 'idb-keyval';
+import { transformData } from '../../utils/transformData.jsx'
 
 export const MassageSelector = ({setTitle}) => {
 // const { loading, error, data } = useQuery(GET_SERVICES); // fetches data when component mounts
 const [getServices, { loading, error, data }] = useLazyQuery(GET_SERVICES);
 const [allServices, setAllServices] = useState([]); 
+const [checkedOption, setCheckedOption] = useState(null);
+const [selectedOptions, setSelectedOptions] = useState([]);
 
 React.useEffect(() => {
     const fetchData = async () => {
@@ -33,8 +36,9 @@ React.useEffect(() => {
 React.useEffect(() => {
     const fetchLastTime = async () => {
         if (data && data.services) {
-            setAllServices(data.services); // Update state
-            set('servicesData', data.services); // Update IndexedDB
+            const transformedData = transformData(data.services);
+            setAllServices(transformedData); // Update state with transformed data
+            set('servicesData', transformedData); // Update IndexedDB with transformed data
             const currentTime = new Date().getTime();
             set('lastFetchTime', currentTime); // Update fetch time in IndexedDB
             const lastFetchTime = await get('lastFetchTime');
@@ -43,6 +47,7 @@ React.useEffect(() => {
     }
     fetchLastTime();
 }, [data]);
+
 
 console.log(allServices);
 const initialState = useUserPreferenceContext();
@@ -57,7 +62,6 @@ const [state, dispatch] = useReducer(reducer, initialState);
         getTitle();
     },[state])
 
-    const [selectedOptions, setSelectedOptions] = useState([]);
     
     // function logic handling the changed state of the select box
     const getRecommendations = () => {
@@ -171,9 +175,8 @@ const [state, dispatch] = useReducer(reducer, initialState);
         }
     }
 
-    
-    
     const handleCheckboxChange = (option) => {
+        setCheckedOption(option.title);
         // Check by option name
         /// add a toggle for the checkboxes so only one is checked
        // if (checkedMassages.some(massage => massage.name === option.name)) {
@@ -320,7 +323,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
                 bg='gray.300'
                 borderRadius='4'
                 onChange={() => handleCheckboxChange(option)}
-                isChecked={state.massageType === option.name}>
+                isChecked={checkedOption === option.title}>
                 Select
             </Checkbox>
                 </Box>
