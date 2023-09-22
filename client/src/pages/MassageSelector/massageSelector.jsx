@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { Stack, Flex, Grid, Select, HStack, Text, Box, Image, Checkbox } from '@chakra-ui/react'
-// import massageOptions from '../../utils/massageOptions/massageOptions.json' 
+import React, { useState, useEffect, useReducer, forwardRef } from "react";
+import { Stack, Flex, Grid, Select, HStack, Text, Box, Image, Checkbox } from '@chakra-ui/react' 
 // import the context hook
 import { useUserPreferenceContext } from './userContext'
 import {reducer} from './reducers'
@@ -10,7 +9,7 @@ import {GET_SERVICES} from '../../utils/queries.jsx'
 import { get, set } from 'idb-keyval';
 import { transformData } from '../../utils/transformData.jsx'
 
-export const MassageSelector = ({setTitle}) => {
+export const MassageSelector = forwardRef(({ setTitle }, ref) => {
 // const { loading, error, data } = useQuery(GET_SERVICES); // fetches data when component mounts
 const [getServices, { loading, error, data }] = useLazyQuery(GET_SERVICES);
 const [allServices, setAllServices] = useState([]); 
@@ -22,8 +21,8 @@ React.useEffect(() => {
         const storedServices = await get('servicesData');
         const lastFetchTime = await get('lastFetchTime');
         const currentTime = new Date().getTime();
-
-        if (storedServices && lastFetchTime && (currentTime - lastFetchTime <= 1 * 60 * 60 * 1000)) {
+// (currentTime - lastFetchTime <= 1 * 60 * 60 * 1000)
+        if (storedServices && lastFetchTime && (currentTime - lastFetchTime <= 10 * 1000)) {
             // Data exists in IndexedDB and is less than an hour old
             setAllServices(storedServices);
         } else {
@@ -81,7 +80,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
             recommendedMassages = [];
             // push to the array
             recommendedMassages.push(allServices[0]); // Swedish massage
-        
+            
             // set the state from the array contents
             setSelectedOptions(recommendedMassages);
         } 
@@ -113,6 +112,9 @@ const [state, dispatch] = useReducer(reducer, initialState);
             recommendedMassages.push(allServices[0]); // Swedish massage
             recommendedMassages.push(allServices[1]); // Sports massage
             recommendedMassages.push(allServices[4]); // Hot stones
+            for(let i = 5; i < allServices.length; i++){ // added massages
+                recommendedMassages.push(allServices[i]);
+            }
          
             setSelectedOptions(recommendedMassages);
         }
@@ -206,7 +208,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
     }
 
     return (
-    <Flex align="center" justify="start" minHeight="100vh" direction="column" >
+    <Flex align="center" justify="start" minHeight="100vh" direction="column" ref={ref} >
         <Stack width="1080px" height="150px" maxWidth="100%" background="#FFFFFF">
             <Text fontFamily="Noto Sans"
                 lineHeight="1.43"
@@ -332,7 +334,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
         </Box>
         </Flex>
     )
-}
+})
 
 
 

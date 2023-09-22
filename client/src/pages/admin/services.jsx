@@ -1,102 +1,176 @@
-import React from "react";
-import { Box, Flex, Text, Button, VStack, Image, HStack, Link } from '@chakra-ui/react';
+import React, {useState, useEffect} from "react";
+import { Box, Flex, Text, Button, VStack, Image, HStack, Link, useDisclosure } from '@chakra-ui/react';
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { GET_SERVICES, GET_SERVICE_BY_ID } from "../../utils/queries.jsx";
+import { transformData } from "../../utils/transformData.jsx";
+import { animated, useSpring, useTrail } from 'react-spring';
+import { AddUpdateService } from "./addUpdateServices.jsx";
 
-const ServiceBox = ({ title, description }) => {
-    return (
-        <Flex 
-            bgColor="#d9d9d0" 
-            w="85vw" 
-            spacing={4}
-            p={0} 
-            boxShadow="xl"
-            borderWidth="1px" 
-            borderRadius="lg" 
-            overflow="hidden"
-            justifyContent="space-between"
-            alignItems='center'>
-            <Box 
-                display='flex' 
-                p={2} 
-                flexDirection='column' >
-                <Text 
-                    fontFamily="Inter-Regular" 
-                    fontSize="14px" 
-                    width='25%' 
-                    color="#000000" 
-                    textAlign="center">
-                        {title}
-                </Text>
-                <Text 
-                    fontFamily="Inter-Regular" 
-                    fontSize="10px" 
-                    color="#000000" 
-                    textAlign="center" 
-                    overflow='hidden'>
-                        {description}
-                </Text>
-            </Box>
-            <Button 
-                bgColor="#476c30e6" 
-                w="8%" 
-                mr={2} 
-                onClick={() => editService("Open the Add/Update menu")}>
-                <Text 
-                    fontFamily="Inter-Regular" 
-                    fontSize="12px" 
-                    color="#ffffff"
-                    >
-                    Update
-                </Text>
-            </Button>
-        </Flex>
-    );
-}
-
-export const Services = () => {
-    const services = [
-        {
-            title: 'Swedish Massage',
-            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
-        },
-        {
-            title: 'Hot Stones',
-            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
-        },
-        {
-            title: 'Hot Stone',
-            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
-        },
-        {
-            title: 'Stones',
-            description: 'Swedish massage is a type of massage that uses long, flowing strokes to promote relaxation and relieve tension',
-        },
-      
-    ];
+const ServiceBox = ({ id, title, description, image }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [updatedService, setUpdatedService] = useState(null);
+    
+    const editService = async (element) => {
+        setUpdatedService({ element });
+        onOpen(); // Open the modal
+    };
+    
+    const handleUpdate = (updatedServiceId) => {
+        // Handle the update logic here
+        console.log(updatedServiceId)
+        onClose(); // Close the modal after updating
+    };
 
     return (
-        <Box bgColor="#ffffff" w="100%" d="flex" justifyContent="center" height='60vh'> 
-        <Box textAlign='center' fontSize="34px" mt={15} mb={16}> Services </Box>
-            <VStack bgColor="#ffffff" spacing={4} display='flex' justify='center' className="100" >
-
-                {services.map(service => (
-                <ServiceBox 
-                    key={service.title} 
-                    title={service.title} 
-                    description={service.description} />
-                ))}
-
-                <Box 
-                w="100%" 
-                p={4}
-                boxShadow="xl" 
+        <>
+            <Flex 
+                bgColor="#d9d9d0" 
+                w="85vw" 
+                spacing={4}
+                p={0} 
+                boxShadow="xl"
+                borderWidth="1px" 
                 borderRadius="lg" 
                 overflow="hidden"
-                display="flex" 
-                justifyContent="center" 
-                alignItems="center">
+                justifyContent="space-between"
+                alignItems='center'>
+                <Box 
+                    display='flex' 
+                    p={2} 
+                    flexDirection='column' >
+                    <Text 
+                        fontFamily="Inter-Regular" 
+                        fontSize="14px"
+                        color="#000000"
+                        whiteSpace="normal" 
+                        textAlign="left"
+                        pl={5}>
+                            {title}
+                            <hr></hr>
+                    </Text>
+                    <Text 
+                        fontFamily="Inter-Regular" 
+                        fontSize="10px" 
+                        color="#000000" 
+                        textAlign="center" 
+                        overflow='hidden'>
+                            {description}
+                    </Text>
+                </Box>
+                {/* Update button */}
+                <Button 
+                    bgColor="#476c30e6" 
+                    w="8%"
+                    data-id={id}
+                    mr={2} 
+                    onClick={(e) => editService(e.currentTarget.getAttribute('data-id'))}
+                >
+                    <Text 
+                        fontFamily="Inter-Regular" 
+                        fontSize="12px" 
+                        color="#ffffff"
+                    >
+                        Update
+                    </Text>
+                </Button>
+            </Flex>
+
+            {/* AddUpdateService modal */}
+            <AddUpdateService
+                isOpen={isOpen}
+                onClose={onClose}
+                updatedService={updatedService}
+                handleUpdate={handleUpdate}
+            />
+        </>
+    );
+};
+
+export const Services = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [massageServices, setMassageServices] = useState([])
+    const [service, setService] = useState([]);
+
+    const addService = () => {
+        onOpen(); // Open the modal
+      };
+
+    // query upon command
+    const [
+        getServiceById, 
+        {
+            loading: serviceLoading, 
+            error: serviceError, 
+            data: serviceData
+        }
+    ] = useLazyQuery(GET_SERVICE_BY_ID);
+    
+    // // Let's say you want to fetch a specific service by ID when the component mounts
+    // useEffect(() => {
+    //     // For example purposes, let's fetch the service with ID "123"
+    //     getServiceById({ variables: { id: "123" } });
+    // }, [getServiceById]);
+
+    // Update service state when serviceData changes
+    useEffect(() => {
+        if (serviceData && serviceData.service) {
+            setService(serviceData.service);
+        }
+    }, [serviceData]);
+
+    // query upon component mount
+    const {
+        loading: servicesLoading, 
+        error: servicesError, 
+        data: servicesData
+    } = useQuery(GET_SERVICES);
+
+    
+    // Update services state when servicesData changes
+    useEffect(() => {
+        if (servicesData && servicesData.services) {
+            const transformedData = transformData(servicesData.services);
+            setMassageServices(transformedData);
+        }
+    }, [servicesData]);
+
+     // Animation
+     const trail = useTrail(massageServices.length, {
+        opacity: 1,
+        transform: 'translateY(0)',
+        from: { opacity: 0, transform: 'translatex(140px)' },
+        delay: 200,
+    });
+    console.log(massageServices)
+    return (
+        <>
+        <Box bgColor="#ffffff" w="100%" d="flex" justifyContent="center" height='60vh'> 
+            <Box textAlign='center' fontSize="34px" mt={15} mb={16}>Services</Box>
+            <VStack bgColor="#ffffff" spacing={4} display='flex' justify='center' className="100">
+                {trail.map((props, index) => (
+                    <animated.div style={props} key={massageServices[index].title}>
+                        <ServiceBox 
+                            title={massageServices[index].title} 
+                            description={massageServices[index].description}
+                            id={massageServices[index].id}
+                            src={massageServices[index].image}   
+                        />
+                    </animated.div>
+                ))}
+                <Box 
+                    w="100%" 
+                    p={4}
+                    boxShadow="xl" 
+                    borderRadius="lg" 
+                    overflow="hidden"
+                    display="flex" 
+                    justifyContent="center" 
+                    alignItems="center">
                     <Button 
-                    colorScheme="blue" 
-                    onClick={() => editService("Open the Add/Update menu")}>ADD</Button>
+                        colorScheme="blue" 
+                        onClick={() => addService()}>
+                        ADD
+                    </Button>
                 </Box>
                 <Box 
                     height='40vh' 
@@ -112,13 +186,15 @@ export const Services = () => {
                         src='https://bit.ly/dan-abramov'
                         alt='Dan Abramov'
                     />
-                    <Text textColor='#ffffff' textAlign="center" mt={2} fontSize={28} fontFamily='Brush Script MT, serif'>
-                        RecoverRx Massage
-                        <Text mt={1}>
-                            713 N Ware Road Ste 6 
+                    <VStack spacing={1} alignItems="center">
+                        <Text textColor='#ffffff' textAlign="center" fontSize={28} fontFamily='Brush Script MT, serif'>
+                            RecoverRx Massage
+                        </Text>
+                        <Text mt={1} textColor='#ffffff'>
+                            713 N Ware Road Ste 6 <br></br>
                             McAllen, TX 78501
                         </Text>
-                    </Text>
+                    </VStack>
                     <HStack 
                     spacing={4} 
                     mt={3}>
@@ -142,6 +218,11 @@ export const Services = () => {
 
             </VStack>
         </Box>
+        <AddUpdateService
+                isOpen={isOpen}
+                onClose={onClose}
+            />
+        </>
     );
 };
 
