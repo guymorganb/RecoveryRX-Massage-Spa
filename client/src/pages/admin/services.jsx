@@ -89,34 +89,11 @@ const ServiceBox = ({ id, title, description, image }) => {
 export const Services = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [massageServices, setMassageServices] = useState([])
-    const [service, setService] = useState([]);
+    
 
     const addService = () => {
         onOpen(); // Open the modal
       };
-
-    // query upon command
-    const [
-        getServiceById, 
-        {
-            loading: serviceLoading, 
-            error: serviceError, 
-            data: serviceData
-        }
-    ] = useLazyQuery(GET_SERVICE_BY_ID);
-    
-    // // Let's say you want to fetch a specific service by ID when the component mounts
-    // useEffect(() => {
-    //     // For example purposes, let's fetch the service with ID "123"
-    //     getServiceById({ variables: { id: "123" } });
-    // }, [getServiceById]);
-
-    // Update service state when serviceData changes
-    useEffect(() => {
-        if (serviceData && serviceData.service) {
-            setService(serviceData.service);
-        }
-    }, [serviceData]);
 
     // query upon component mount
     const {
@@ -124,7 +101,6 @@ export const Services = () => {
         error: servicesError, 
         data: servicesData
     } = useQuery(GET_SERVICES);
-
     
     // Update services state when servicesData changes
     useEffect(() => {

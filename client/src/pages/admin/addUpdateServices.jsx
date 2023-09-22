@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 
-import { UPDATE_SERVICE, ADD_SERVICE } from "../../utils/mutations.jsx";
+import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutations.jsx";
 import {
   Box,
   Text,
@@ -29,10 +29,13 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
     const [buttonText, setButtonText] = useState("Click to expand");
     const [min60, setMin60] = useState("");
     const [min90, setMin90] = useState("");
+    const [deleteButtonText, setDeleteButtonText] = useState("Delete")
+    const [saveButtonText, setSaveButtonText] = useState("Save")
+    const [clickCount, setClickCount] = useState(0);
     const [updateService, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_SERVICE);
     const [addService, { loading: addLoading, error: addError }] = useMutation(ADD_SERVICE);
-   
-    
+    const [deleteService, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SERVICE);
+
     useEffect(()=>{
     setElementId(updatedService)
     
@@ -44,55 +47,61 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
     };
 
     const handleSave = async (dataId) => {
-    console.log(imageUrl)
-    console.log(description)
-    console.log(title)
-    console.log(min60)
-    console.log(min90)
-    console.log(dataId)
-    try{
-        // const priceArray = [{ min60: min60, min90: min90 }];
-    if(dataId != null){
-        // update the service
-        updateService({ 
-            variables: { 
-                id: dataId, 
-                title: title, 
-                description: description, 
-                min60: min60, 
-                min90: min90, 
-                image: imageUrl 
-            } 
-        });
-    }
+        console.log(imageUrl)
+        console.log(description)
+        console.log(title)
+        console.log(min60)
+        console.log(min90)
+        console.log(dataId)
+        try{
+            // const priceArray = [{ min60: min60, min90: min90 }];
+        if(dataId != null){
+            // update the service
+            updateService({ 
+                variables: { 
+                    id: dataId, 
+                    title: title, 
+                    description: description, 
+                    min60: min60, 
+                    min90: min90, 
+                    image: imageUrl 
+                } 
+            });
+        }
 
-    else if(dataId == null){
-        // add the service
-        addService({ 
-            variables: { 
-                title: title, 
-                description: description, 
-                min60: min60, 
-                min90: min90, 
-                image: imageUrl 
-            } 
-        });
-    }
-}catch(error){
-    console.log(error)
-}
-    };
+        else if(dataId == null){
+            // add the service
+            addService({ 
+                variables: { 
+                    title: title, 
+                    description: description, 
+                    min60: min60, 
+                    min90: min90, 
+                    image: imageUrl 
+                } 
+            });
+            }
+        }catch(error){
+            console.log(error)
+        }
+      };
 
-    const handleDelete = () => {
+    const handleDelete = (dataId) => {
+      try{
         // delete the service
-        console.log("Delete button clicked");
+        console.log(dataId);
+        deleteService(dataId) // debug this
+        
+      }catch(error){
+        console.log(error)
+      }
     };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add or Update Service {elementId}</ModalHeader>
+      {updatedService ? (<ModalHeader>Update Service</ModalHeader>) : (<ModalHeader>Add Service</ModalHeader>)}
         <ModalCloseButton />
         <ModalBody>
           <Box
@@ -160,14 +169,43 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
                   <Button m={3} 
                   colorScheme="blue"
                   data-id={updatedService?.element}
-                  onClick={(e)=>{handleSave(e.currentTarget.getAttribute('data-id')) }}
+                  onClick={(e)=>{
+                    const newClickCount = clickCount + 1;
+                  setClickCount(newClickCount);
+                  if (newClickCount === 1) {
+                    setSaveButtonText("Confirm Save?"); 
+                  } else if (newClickCount === 2) {
+                    handleSave(e.currentTarget.getAttribute('data-id')) 
+                  // close the modal and reset the button text here
+                  onClose(); // onClose passed through props from parent 
+                  setSaveButtonText("Save");
+                  setClickCount(0);  // reset the click count
+                  }}}
                   >
-                    Save
+                   {saveButtonText}
                   </Button>
-                )}
-                <Button colorScheme="blue" onClick={handleDelete}>
-                  Delete
+                  // delete button
+                )}{updatedService && (
+                <Button
+                data-id={updatedService?.element}
+                colorScheme="blue" 
+                onClick={e => {
+                  const newClickCount = clickCount + 1;
+                  setClickCount(newClickCount);
+                  if (newClickCount === 1) {
+                    setDeleteButtonText("Confirm Delete?"); 
+                  } else if (newClickCount === 2) {
+                    handleDelete(e.currentTarget.getAttribute('data-id'));
+                    // close the modal and reset the button text here
+                    onClose(); // onClose passed through props from parent 
+                    setDeleteButtonText("Delete");
+                    setClickCount(0);  // reset the click count
+                    }
+                  }}
+                >
+                  {deleteButtonText}
                 </Button>
+                )}
               </Box>
             </HStack>
           </Box>
