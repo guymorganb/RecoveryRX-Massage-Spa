@@ -112,8 +112,10 @@ const [state, dispatch] = useReducer(reducer, initialState);
             recommendedMassages.push(allServices[0]); // Swedish massage
             recommendedMassages.push(allServices[1]); // Sports massage
             recommendedMassages.push(allServices[4]); // Hot stones
-            for(let i = 5; i < allServices.length; i++){ // added massages
-                recommendedMassages.push(allServices[i]);
+            if(allServices.length >= 4){
+                for(let i = 5; i < allServices.length; i++){ // added massages
+                    recommendedMassages.push(allServices[i]);
+                }
             }
          
             setSelectedOptions(recommendedMassages);

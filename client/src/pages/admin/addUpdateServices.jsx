@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useState} from "react";
+import Confetti from 'react-dom-confetti';
 
-import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutations.jsx";
 import {
   Box,
   Text,
@@ -19,85 +18,67 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 
-export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate }) => {
-    
-    const [elementId, setElementId] = useState()
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [showTextBox, setShowTextBox] = useState(false);
-    const [buttonText, setButtonText] = useState("Click to expand");
-    const [min60, setMin60] = useState("");
-    const [min90, setMin90] = useState("");
-    const [deleteButtonText, setDeleteButtonText] = useState("Delete")
-    const [saveButtonText, setSaveButtonText] = useState("Save")
-    const [clickCount, setClickCount] = useState(0);
-    const [updateService, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_SERVICE);
-    const [addService, { loading: addLoading, error: addError }] = useMutation(ADD_SERVICE);
-    const [deleteService, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SERVICE);
+export const AddUpdateService = ({ isOpen, onClose, updatedService, addService, updateMutation, deleteMutation}) => {
+  
+const [confetti, setConfetti] = useState(false);
+const [title, setTitle] = useState("");
+const [description, setDescription] = useState("");
+const [imageUrl, setImageUrl] = useState("");
+const [showTextBox, setShowTextBox] = useState(false);
+const [buttonText, setButtonText] = useState("Click to expand");
+const [min60, setMin60] = useState("");
+const [min90, setMin90] = useState("");
+const [deleteButtonText, setDeleteButtonText] = useState("Delete")
+const [saveButtonText, setSaveButtonText] = useState("Save")
+const [clickCount, setClickCount] = useState(0);
+const confettiConfig = { angle: 90, spread: 190, startVelocity: 30, elementCount: 1170, decay: 0.91, duration: 3000, origin: { x: 0.5, y: 1 } };
 
-    useEffect(()=>{
-    setElementId(updatedService)
-    
-    },[elementId])
-        
-    const handleImageURL = () => {
-    setShowTextBox(!showTextBox);
-    setButtonText(showTextBox ? "Click to expand" : "Hide");
-    };
 
-    const handleSave = async (dataId) => {
-        console.log(imageUrl)
-        console.log(description)
-        console.log(title)
-        console.log(min60)
-        console.log(min90)
-        console.log(dataId)
-        try{
-            // const priceArray = [{ min60: min60, min90: min90 }];
-        if(dataId != null){
-            // update the service
-            updateService({ 
-                variables: { 
-                    id: dataId, 
-                    title: title, 
-                    description: description, 
-                    min60: min60, 
-                    min90: min90, 
-                    image: imageUrl 
-                } 
-            });
-        }
+const handleImageURL = () => {
+setShowTextBox(!showTextBox);
+setButtonText(showTextBox ? "Click to expand" : "Hide");
+};
 
-        else if(dataId == null){
-            // add the service
-            addService({ 
-                variables: { 
-                    title: title, 
-                    description: description, 
-                    min60: min60, 
-                    min90: min90, 
-                    image: imageUrl 
-                } 
-            });
-            }
-        }catch(error){
-            console.log(error)
-        }
-      };
+const handleSave = async (dataId) => {
+  // passing: imageUrl, description, title, min60, min90, dataId
+  if(dataId != null) {
+    try {
+      // update the service
+      setTimeout(()=>{
+        updateMutation(dataId, title, description, min60, min90, imageUrl)
+    }, 2000)
+    } catch (error) {
+      console.error("Error occurred while updating service: ", error);
+    }
+  } // end: if (dataId != null)
+  else {
+    try {
+      // add the service
+      addService(title, description, min60, min90, imageUrl )
+      setTimeout(()=>{
+        window.location.reload()
+      },2250)
+    } catch (error) {
+      console.error("Unknown error occurred while adding service: ", error);
+    }
+  }
+};
 
-    const handleDelete = (dataId) => {
-      try{
-        // delete the service
-        console.log(dataId);
-        deleteService(dataId) // debug this
-        
-      }catch(error){
-        console.log(error)
-      }
-    };
+const handleDelete = (dataId) => {
+  // delete the service
+  try{
+    deleteMutation(dataId)
+    setTimeout(()=>{
+      window.location.reload()
+  },2250)
+  }catch(error){
+    console.error("Error occurred while deleting service: ", error);
+    alert(error)
+  }
+};
 
   return (
+    <>
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
@@ -171,15 +152,19 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
                   data-id={updatedService?.element}
                   onClick={(e)=>{
                     const newClickCount = clickCount + 1;
-                  setClickCount(newClickCount);
+                    setClickCount(newClickCount);
                   if (newClickCount === 1) {
                     setSaveButtonText("Confirm Save?"); 
                   } else if (newClickCount === 2) {
                     handleSave(e.currentTarget.getAttribute('data-id')) 
-                  // close the modal and reset the button text here
-                  onClose(); // onClose passed through props from parent 
-                  setSaveButtonText("Save");
-                  setClickCount(0);  // reset the click count
+                    // close the modal and reset the button text here
+                    onClose(); // onClose passed through props from parent 
+                    setSaveButtonText("Save");
+                    setClickCount(0);  // reset the click count
+                    setConfetti(true); // blow out confetti
+                    setTimeout(() => {
+                      setConfetti(false);
+                    }, 2000)
                   }}}
                   >
                    {saveButtonText}
@@ -190,8 +175,8 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
                 data-id={updatedService?.element}
                 colorScheme="blue" 
                 onClick={e => {
-                  const newClickCount = clickCount + 1;
-                  setClickCount(newClickCount);
+                    const newClickCount = clickCount + 1;
+                    setClickCount(newClickCount);
                   if (newClickCount === 1) {
                     setDeleteButtonText("Confirm Delete?"); 
                   } else if (newClickCount === 2) {
@@ -200,8 +185,11 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
                     onClose(); // onClose passed through props from parent 
                     setDeleteButtonText("Delete");
                     setClickCount(0);  // reset the click count
-                    }
-                  }}
+                    setConfetti(true); // blow confetti
+                    setTimeout(() => {
+                      setConfetti(false);
+                    }, 2000)
+                    }}}
                 >
                   {deleteButtonText}
                 </Button>
@@ -212,5 +200,7 @@ export const AddUpdateService = ({ isOpen, onClose, updatedService, handleUpdate
         </ModalBody>
       </ModalContent>
     </Modal>
+    <Confetti active={confetti} config={confettiConfig} />
+    </>
   )
 }
