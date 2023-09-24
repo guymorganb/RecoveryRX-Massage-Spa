@@ -2,21 +2,9 @@ import React from "react";
 import { Stack, VStack, Box, Text, Image, Link } from '@chakra-ui/react'
 import myImage from '../../assets/pexels-ryutaro-tsukata-5473223-1.png'
 import myImage2 from '../../assets/1-1.png'
-import { useQuery } from '@apollo/client';
-import {GET_SERVICES} from '../../utils/queries.jsx'
 
 
-const Hero = () => {
-  const { loading, error, data } = useQuery(GET_SERVICES);
-
-  React.useEffect(() => {
-    if (data && data.services) {
-      // Saving the services data to local storage
-      localStorage.setItem('servicesData', JSON.stringify(data.services));
-    }
-  }, [data]);
-
-  
+const Hero = ({ onBookNowClick }) => {
   return (
   <Box className="navContainer">
   <Stack >
@@ -69,6 +57,7 @@ const Hero = () => {
           borderColor='#ccd0d5'
           color='#ffffff'
           boxShadow='inset 0px -8px 10px #00000033, inset 0px 4px 4px #ffffff80'
+          onClick={ onBookNowClick }
           _hover={{ 
               boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)'
           }}
@@ -82,9 +71,7 @@ const Hero = () => {
         </Box>
     </Box>
     <Box width="75px" height="10%" />
-    <VStack
-      
-    >
+    <VStack>
     <Box>
       <Image  
         boxSize={{ base: "75px",sm: "100px", md: "125px", lg: "125px", xl:'150px' }}
@@ -105,7 +92,6 @@ const Hero = () => {
       textAlign="center">
       Our Services
     </Text>
-  
     <Text
       fontFamily="Noto Sans"
       lineHeight="1.0"

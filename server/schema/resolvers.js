@@ -28,7 +28,7 @@ const resolvers = {
         const service = new Service({
           title: args.title,
           description: args.description,
-          price: args.price, // Here, args.price is an array of price objects
+          price: args.price, 
           image: args.image
         });
   
@@ -38,7 +38,9 @@ const resolvers = {
         throw new Error("Failed to add service.");
       }
     },
-    updateService: async (_, { id, ...rest }) => {  // ...rest is doing the same thing you did in the above addService
+    updateService: async (_, args ) => { 
+      console.log(args)
+      const { id, ...rest } = args;
       try {
         return await Service.findByIdAndUpdate(id, rest, { new: true });
       } catch (error) {

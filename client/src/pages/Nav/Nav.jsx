@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, HStack, VStack, Link, Image, Flex } from '@chakra-ui/react';
 import line from '../../assets/line-1.svg'
-const Nav = () => {
+const Nav = ({ onBookNowClick }) => {
   return (
     <Box className="navContainer" width="100%" display="flex" justifyContent="center" >
       <VStack 
@@ -73,7 +73,7 @@ const Nav = () => {
                 borderColor: '#bec3c9',
                 boxShadow: '0 2px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(88, 144, 255, 0.1)'
               }}>
-                <Link color='white.500' href='#'>Book Now</Link>
+                <Link color='white.500' href="#" onClick={ onBookNowClick }>Book Now</Link>
             </Box>
           </HStack>
         </HStack>

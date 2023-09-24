@@ -20,6 +20,7 @@
     "dependencies": {
         "@apollo/server": "^4.9.3",
         "@apollo/usage-reporting-protobuf": "^4.1.1",
-        "@apollo/utils.fetcher": "^3.0.0"
+        "@apollo/utils.fetcher": "^3.0.0",
+        "react-dom-confetti": "^0.2.0"
     }
 }
