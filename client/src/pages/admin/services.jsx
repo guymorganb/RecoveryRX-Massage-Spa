@@ -10,6 +10,7 @@ import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutatio
 const ServiceBox = ({ id, title, description }) => {
 const { isOpen, onOpen, onClose } = useDisclosure();
 const [updatedServiceId, setUpdatedServiceId] = useState(null);
+
 // mutations
 const [updateService, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_SERVICE);
 const [deleteService, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_SERVICE);
