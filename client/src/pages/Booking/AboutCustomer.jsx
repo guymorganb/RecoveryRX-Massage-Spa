@@ -1,12 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
-async function submitData(event) {
-  event.preventDefault();
-  const response = await fetch('/', {
-    method: 'GET',
-  });
-  console.log(response);
-}
+import axios from 'axios';
 
 function AboutCustomer({title}) {
   const nameRegex = /[a-zA-Z]{3,}/;
@@ -18,6 +12,7 @@ function AboutCustomer({title}) {
 
   const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
   const [phoneError, setPhoneError] = useState(false);
+  const [data, setData] = useState({});
 
   function handleFNameInput(event) {
     const result = nameRegex.test(event.target.value);
@@ -37,6 +32,16 @@ function AboutCustomer({title}) {
   function handlePhoneInput(event) {
     const result = phoneRegex.test(event.target.value);
     (!result) ? setPhoneError(true) : setPhoneError(false);
+  }
+
+  function submitData(event) {
+    if (event) {
+      console.log('setData called');
+      axios.post('/api')
+      .then(res => res.data)
+      .then(d => setData(d))
+      .then(() => console.log(data));
+    }
   }
 
   return (

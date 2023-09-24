@@ -4,8 +4,8 @@ config();
 
 const connectDB = async () => {
     try {
-console.log("mongo uri is:" + process.env.MONGODB_URI)
-        await mongoose.connect(process.env.MONGODB_URI, {
+console.log("mongo uri is:" + process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/programming-thoughts')
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/recovery-massage-spa', {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
         });
