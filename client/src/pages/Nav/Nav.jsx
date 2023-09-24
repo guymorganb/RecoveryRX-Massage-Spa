@@ -46,7 +46,7 @@ const Nav = ({ onBookNowClick }) => {
                     boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)',
                     borderRadius: 4,
                   }}>
-                  <Link color='gray.500' href={`#${item.toLowerCase()}`}>{item}</Link>
+                  <Link color='gray.500' href={`#${item}`} onClick={ onBookNowClick }>{item}</Link>
                 </Text>
               ))}
             </Flex>
