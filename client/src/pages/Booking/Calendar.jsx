@@ -6,9 +6,9 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 const d = new Date();
 const monthNumber = d.getMonth();
 const y = d.getFullYear();
-let selected, lastSelected;
+let selected, lastSelected, selectedDate;
 
-function Calendar() {
+function Calendar({setSelectedDate}) {
   const [monthIndex, setMonthIndex] = useState(monthNumber);
   const [yearNumber, setYearNumber] = useState(y);
   const cal = calendar().of(yearNumber, monthIndex);
@@ -130,13 +130,15 @@ function Calendar() {
             selected = event.target;
             selected.style.color = '#5e6d55';
             lastSelected = selected;
-            console.log(selected);
+            selectedDate = new Date(yearNumber, monthIndex, Number(selected.innerText));
+            setSelectedDate(selectedDate.toLocaleDateString());
           } else if(lastSelected) {
             lastSelected.style.color = 'white';
             selected = event.target;
             selected.style.color = '#5e6d55';
             lastSelected = selected;
-            console.log(selected);
+            selectedDate = new Date(yearNumber, monthIndex, Number(selected.innerText));
+            setSelectedDate(selectedDate.toLocaleDateString());
           }
           }}>
               {item}

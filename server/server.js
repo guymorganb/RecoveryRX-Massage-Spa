@@ -7,8 +7,11 @@ import resolvers from './schema/resolvers.js'
 //import { auth } from './utils/authenticate.js'
 import connectDB from './config/connection.js'
 import seedDatabase from './config/seeds.js'; 
+import emailjs from '@emailjs/nodejs';
 
-config();
+config({
+  path: '../.env'
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001
@@ -23,7 +26,7 @@ const server = new ApolloServer({
   });
 
   // Express Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 (async () => {
@@ -35,6 +38,30 @@ app.use(express.json());
         // Apollo Server setup
       await server.start();
       server.applyMiddleware({ app });
+
+      app.post('/api', (req, res) => {
+        console.info('Get was used');
+        console.log('This email will be contact: ' + req.body.email);
+        const templateParams = {
+          email: req.body.email,
+        };
+        console.log(process.env.EMAILJS_PUBLIC);
+
+        emailjs
+          .send('service_7098943', 'template_5grsipc', templateParams, {
+            publicKey: process.env.EMAILJS_PUBLIC,
+            privateKey: process.env.EMAILJS_PRIVATE, // optional, highly recommended for security reasons
+          })
+          .then(
+            (response) => {
+              console.log('SUCCESS!', response.status, response.text);
+            },
+            (err) => {
+              console.log('FAILED...', err);
+            },
+          );
+        res.json({message: 'Everything went okay'});
+      });
         
       // Serve static assets in production
       if (process.env.NODE_ENV === 'production') {
@@ -44,7 +71,6 @@ app.use(express.json());
           res.sendFile(path.join(__dirname, '../client/build/index.html'));
         });
       }
-  
       
       // Start the server
       app.listen(PORT, () => {
