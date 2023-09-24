@@ -9,7 +9,9 @@ import connectDB from './config/connection.js'
 import seedDatabase from './config/seeds.js'; 
 import emailjs from '@emailjs/nodejs';
 
-config();
+config({
+  path: '../.env'
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001
@@ -39,13 +41,16 @@ app.use(express.json());
 
       app.post('/api', (req, res) => {
         console.info('Get was used');
+        console.log('This email will be contact: ' + req.body.email);
         const templateParams = {
+          email: req.body.email,
         };
-        
+        console.log(process.env.EMAILJS_PUBLIC);
+
         emailjs
           .send('service_7098943', 'template_5grsipc', templateParams, {
-            publicKey: '-tefOI_EL4ka-L4d0',
-            privateKey: 'uUSRpAFhnsesWM58xfx5I', // optional, highly recommended for security reasons
+            publicKey: process.env.EMAILJS_PUBLIC,
+            privateKey: process.env.EMAILJS_PRIVATE, // optional, highly recommended for security reasons
           })
           .then(
             (response) => {

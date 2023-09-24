@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
 import axios from 'axios';
 
-function AboutCustomer({title}) {
+function AboutCustomer({title, selectedDate}) {
   const nameRegex = /[a-zA-Z]{3,}/;
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
@@ -36,11 +36,38 @@ function AboutCustomer({title}) {
 
   function submitData(event) {
     if (event) {
+      let completeForm = false;
+      let formCount = 0;
+      let formItems = document.getElementsByClassName('form-item');
+      let formArr = Array.from(formItems);
       console.log('setData called');
-      axios.post('/api')
-      .then(res => res.data)
-      .then(d => setData(d))
-      .then(() => console.log(data));
+      formArr.forEach((item) => {
+        if(item.value) {
+          formCount++;
+        }
+      })
+      if (formCount === 7) {
+        console.log('Form is complete');
+        if(!firstNameError && !lastNameError && !emailError && !phoneError) {
+          console.log('No errors');
+          console.log('Ready to send data');
+          // completeForm = true;
+          const dataArr =[];
+          formArr.forEach((item) => {
+              dataArr.push([item.name, item.value]);
+          });
+          const obj = Object.fromEntries(dataArr);
+          console.log(obj);
+          if (completeForm) {
+            axios.post('/api', {
+              email: obj.email,
+            })
+              .then(res => res.data)
+              .then(d => setData(d))
+              .then(() => console.log(data));
+          }
+        }
+      }
     }
   }
 
@@ -76,7 +103,7 @@ function AboutCustomer({title}) {
           pb={'1.5em'}
           isInvalid={firstNameError}
           >
-            <Input type='text' placeholder="First Name" backgroundColor={'white'} onChange={handleFNameInput}/>
+            <Input type='text' placeholder="First Name" name='firstName' backgroundColor={'white'} onChange={handleFNameInput} className="form-item"/>
             {!firstNameError ? (
               <div></div>
             ) : (
@@ -88,7 +115,7 @@ function AboutCustomer({title}) {
           pb={'1.5em'}
           isInvalid={lastNameError}
           >
-            <Input type='text' placeholder="Last Name" backgroundColor={'white'} onChange={handleLNameInput}/>
+            <Input type='text' placeholder="Last Name" name='lastName' backgroundColor={'white'} onChange={handleLNameInput} className="form-item"/>
             {!lastNameError ? (
               <div></div>
             ) : (
@@ -100,7 +127,7 @@ function AboutCustomer({title}) {
           pb={'1.5em'}
           isInvalid={emailError}
           >
-            <Input type='email' placeholder="Email" backgroundColor={'white'} onChange={handleEmailInput}/>
+            <Input type='email' placeholder="Email" name='email' backgroundColor={'white'} onChange={handleEmailInput} className="form-item"/>
             {!emailError ? (
               <div></div>
             ) : (
@@ -112,7 +139,7 @@ function AboutCustomer({title}) {
           pb={'1.5em'}
           isInvalid={phoneError}
           >
-            <Input type='tel' placeholder="Phone Number" backgroundColor={'white'} onChange={handlePhoneInput}/>
+            <Input type='tel' placeholder="Phone Number" name='phone' backgroundColor={'white'} onChange={handlePhoneInput} className="form-item"/>
             {!phoneError ? (
               <div></div>
             ) : (
@@ -125,19 +152,45 @@ function AboutCustomer({title}) {
           >
             <Input 
               type='text' 
-              placeholder="Please Select a Massage From Above" 
+              placeholder="Please Select a Date from above" 
+              name='date'
               backgroundColor={'white'} 
               isDisabled={true}
-              value={title}
+              value={selectedDate}
+              className="form-item"
             />
           </FormControl>
           <FormControl
           color={'black'}
           pb={'1.5em'}
           >
-            <Select placeholder="Would you like to add cupping to your massage?" backgroundColor={'white'}>
+            <Input 
+              type='text' 
+              placeholder="Please Select a Massage From Above" 
+              name='massage'
+              backgroundColor={'white'} 
+              isDisabled={true}
+              value={title}
+              className="form-item"
+            />
+          </FormControl>
+          <FormControl
+          color={'black'}
+          pb={'1.5em'}
+          >
+            <Select placeholder="Would you like to add cupping to your massage?" name='cupping' backgroundColor={'white'} className="form-item">
               <option value='yes'>Yes</option>
               <option value='no'>No</option>
+            </Select>
+          </FormControl>
+          <FormControl
+          color={'black'}
+          pb={'1.5em'}
+          >
+            <Select placeholder="Preferred Method of Contact?" name='contactMethod' backgroundColor={'white'} className="form-item">
+              <option value='email'>Email</option>
+              <option value='text'>Text</option>
+              <option value='call'>Call</option>
             </Select>
           </FormControl>
           <Button backgroundColor={'#5e6d55'} color={'white'} onClick={submitData}>Submit</Button>

@@ -3,8 +3,10 @@ import Calendar from "./Calendar";
 import AboutCustomer from "./AboutCustomer";
 import Confirmation from "./Confirmation";
 import { Box } from "@chakra-ui/react";
+import { useState } from "react";
 
 function Booking({title}) {
+  const [selectedDate, setSelectedDate] = useState('');
   return ( 
     <div>
       <Box
@@ -13,8 +15,8 @@ function Booking({title}) {
       py={'2em'}
       >
         <Title />
-        <Calendar />
-        <AboutCustomer title={title}/>
+        <Calendar setSelectedDate={setSelectedDate}/>
+        <AboutCustomer title={title} selectedDate={selectedDate}/>
         <Confirmation />
       </Box>
     </div>
