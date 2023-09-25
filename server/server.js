@@ -8,6 +8,8 @@ import resolvers from './schema/resolvers.js'
 import connectDB from './config/connection.js'
 import seedDatabase from './config/seeds.js'; 
 import emailjs from '@emailjs/nodejs';
+import mongoose from 'mongoose'
+import {auth} from "./utils/authenticate.js"
 
 config({
   path: '../.env'
@@ -22,8 +24,10 @@ const server = new ApolloServer({
     resolvers, 
     persistedQueries: false,
     cache: 'bounded',
-    //context: auth, //sets the context so the auth middleware
+    context: auth, //sets the context so the auth middleware
   });
+  // print the mongoose db queries for logging/debugging
+  mongoose.set('debug', true);
 
   // Express Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -34,7 +38,7 @@ app.use(express.json());
         // Connect to MongoDB
       await connectDB();
    
-      //await seedDatabase(); 
+      await seedDatabase(); 
         // Apollo Server setup
       await server.start();
       server.applyMiddleware({ app });

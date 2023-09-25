@@ -1,12 +1,13 @@
-import Service from '../schema/services.js'
+import Service from '../models/services.js'
 import mongoose from "mongoose";
-
+import User from '../models/user.js'
 
 
 const seedDatabase = async () => {
     
     try{
         await Service.deleteMany({});
+        await User.deleteMany({});  // Clear existing users
     const services = await Service.insertMany([
         {
             title: "Swedish Massage",
@@ -39,9 +40,16 @@ const seedDatabase = async () => {
             image: "https://i.imgur.com/lqzR9LJ.jpg",
         }
     ])
+        // Seed a user
+        const user = new User({
+            username: 'admin',
+            email: 'admin@example.com',
+            password: 'password123',
+        });
+        await user.save();  
+
         console.log('Seeding completed!');
-       
-    }catch(error){
+    } catch (error) {
         console.error('Error during seeding:', error);
     }
 }

@@ -4,7 +4,7 @@ config();
 
 const connectDB = async () => {
     try {
-console.log("mongo uri is:" + process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/recovery-massage-spa')
+console.log("mongo uri is:" + 'mongodb://127.0.0.1:27017/recovery-massage-spa')
         await mongoose.connect('mongodb://127.0.0.1:27017/recovery-massage-spa', {
             useNewUrlParser: true, 
             useUnifiedTopology: true,

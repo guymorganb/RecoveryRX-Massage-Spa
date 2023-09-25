@@ -48,3 +48,21 @@ export const DELETE_SERVICE = gql`
     }
   }
 `;
+
+export const LOGIN_USER = gql`#graphql
+# the declaration of a new mutation
+  mutation loginUser($email: String!, $password: String!) { # for desciprion purposes
+    # loginUser is whats returned to the front end
+   
+    loginUser(email: $email, password: $password) {  # Now calling the back-end mutation loginUser on the server and passing the variables
+      # client is asking for the token feild from the returned Auth Object as defined in the typeDefs
+      token
+      # client is asking for the nested user field within the Auth object.
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
