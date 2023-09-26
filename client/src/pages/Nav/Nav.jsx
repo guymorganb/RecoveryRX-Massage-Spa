@@ -4,7 +4,12 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 const Nav = ({ onBookNowClick }) => {
   const location = useLocation();
-
+  
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;  // Months are zero-based
+  const year = date.getFullYear();
+  const formattedDate = `${month}/${day}/${year}`;
   const onHomeRoute = location.pathname === '/' ? true : false;
   const onServicesRoute = location.pathname === '/services' ? true : false;
 
@@ -34,11 +39,10 @@ const Nav = ({ onBookNowClick }) => {
                 boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)',
                 borderRadius: 4,
               }}>
-                RecoveryRx Massage
+                {onServicesRoute ? `RecoveryRx Massage ${formattedDate}`: `RecoveryRx Massage`}
             </Text>
           </HStack>
           <HStack spacing={4}>
-
             {location.pathname === '/' && <Flex 
               spacing={4}
               flexDirection={{ base: 'column', sm: 'column', md: "row" }}>
@@ -80,7 +84,7 @@ const Nav = ({ onBookNowClick }) => {
                 boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)'
               }} _active={{bg: '#edb664', transform: 'scale(0.98)', borderColor: '#bec3c9',
                 boxShadow: '0 2px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(88, 144, 255, 0.1)'}}> 
-              <Link color='white.500' href="/reviews" >My Reviews</Link>
+              <Link color='white.500' href="#" >My Reviews</Link>
             </Box>}
 
             {onServicesRoute && 
@@ -93,7 +97,7 @@ const Nav = ({ onBookNowClick }) => {
                 boxShadow: '0 8px 10px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(88, 144, 255, 0.2)'
               }} _active={{bg: '#edb664', transform: 'scale(0.98)', borderColor: '#bec3c9',
                 boxShadow: '0 2px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(88, 144, 255, 0.1)'}}> 
-              <Link color='white.500' href="/reviews">Home</Link>
+              <Link color='white.500' href="/">Home</Link>
             </Box>}
             
             {onHomeRoute && 
