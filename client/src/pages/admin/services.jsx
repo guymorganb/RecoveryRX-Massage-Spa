@@ -1,13 +1,52 @@
 import React, {useState, useEffect} from "react";
-import { Box, Flex, Text, Button, VStack, Image, HStack, Link, useDisclosure, Spinner } from '@chakra-ui/react';
-import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
+import { Box, Flex, Text, Button, VStack, Image, HStack, Link, useDisclosure, Spinner, Alert, AlertIcon, AlertTitle } from '@chakra-ui/react';
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_SERVICES, GET_SERVICE_BY_ID } from "../../utils/queries.jsx";
 import { transformData } from "../../utils/transformData.jsx";
 import { animated, useSpring, useTrail } from 'react-spring';
 import { AddUpdateService } from "./addUpdateServices.jsx";
 import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutations.jsx";
+import { GET_ME } from "../../utils/queries.jsx";
+import decode from 'jwt-decode'
+import { useHistory } from "react-router-dom";
 
 const ServiceBox = ({ id, title, description }) => {
+    const history = useHistory(); 
+    const { data, loading, error } = useQuery(GET_ME);
+    const [authState, setAuthState] = useState('checking');
+
+      useEffect(() => {
+          // If data is still loading, do nothing.
+          if (loading) return;
+      
+          const token = localStorage.getItem('id_token');
+          const decodedToken = token && decode(token);
+      
+          // No token in localStorage or token is expired.
+          if (!token || (decodedToken && decodedToken.exp < (Date.now() / 1000))) {
+              setAuthState('unauthenticated');
+              history.push("/");
+              return;
+          }
+      
+          //  have a valid token, verify user data.
+          if (data && decodedToken) {
+              const isAuth = (decodedToken.data._id === data.me._id);
+              const isAuth2 = (decodedToken.data.email === data.me.email);
+              
+              if (!isAuth || !isAuth2) {
+                  setAuthState('unauthenticated');
+                  history.push("/");
+                  return;
+              } else {
+                  setAuthState('authenticated');
+              }
+          } else if (error) {
+              setAuthState('error');
+              console.error("Error fetching user:", error);
+          }
+      }, [data, loading, error]);
+
 const { isOpen, onOpen, onClose } = useDisclosure();
 const [updatedServiceId, setUpdatedServiceId] = useState(null);
 
@@ -113,7 +152,7 @@ return (
             </Box>
             {/* Update button */}
             <Button 
-                bgColor="#476c30e6" 
+                bgColor="#5e6d55" 
                 w="8%"
                 data-id={id}
                 mr={2} 
@@ -257,10 +296,10 @@ return (
                 justifyContent="center" 
                 alignItems="center">
                 <Image  
-                    boxSize={{ base: "0px", sm: "75px", md: "100px", lg: "100px" }}
+                    boxSize={{ base: "0px", sm: "75px", md: "100px", lg: "200px" }}
                     borderRadius={8}
                     objectFit='cover'
-                    src='https://bit.ly/dan-abramov'
+                    src='https://i.imgur.com/tTbzG1j.jpg'
                     alt='Dan Abramov'
                 />
                 <VStack spacing={1} alignItems="center">

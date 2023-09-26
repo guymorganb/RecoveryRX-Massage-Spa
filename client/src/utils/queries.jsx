@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_SERVICES = gql`
+export const GET_SERVICES = gql`#graphql
   query Services {
     services {
       _id
@@ -25,6 +25,17 @@ export const GET_SERVICE_BY_ID = gql`
         min90
       }
       image
+    }
+  }
+`;
+export const GET_ME = gql` #graphql
+  # this is the description of the query
+  query me {
+    me { # This is a query named 'me'
+      _id        # Fetch the unique identifier for the user
+      username   # Fetch the username of the user
+      email      # Fetch the email address of the user
+      # dont ask for a password or you get 400 respone
     }
   }
 `;

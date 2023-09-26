@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Nav from '../src/pages/Nav/Nav'
 import Hero from '../src/pages/Hero/Hero'
 import { MassageSelector } from '../src/pages/MassageSelector/massageSelector'
@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {Services} from './pages/admin/services'
 import { AddUpdateService } from './pages/admin/addUpdateServices'
 import { setContext } from '@apollo/client/link/context';
-
+import { Footer } from './pages/footer/footer'
 
 import Booking from '../src/pages/Booking'
 // Set up an Apollo client to point towards graphql backend
@@ -38,35 +38,54 @@ const client = new ApolloClient({
 
 function App() {
   const [title, setTitle] = useState('');
+  const [authStatus, setAuthStatus] = useState('checking');
   const massageSelectorRef = useRef(null);
+
+  useEffect(() => {
+    // You would replace this with your actual authentication logic
+    const token = localStorage.getItem('id_token');
+    if (token) {
+      // Check if the token is valid, etc.
+      setAuthStatus('authenticated');
+    } else {
+      setAuthStatus('unauthenticated');
+    }
+  }, []);
 
   const scrollToMassageSelector = (e) => {
     e.preventDefault();
     if (massageSelectorRef.current) {
       massageSelectorRef.current.scrollIntoView({ behavior: 'smooth' });
-  }
+    }
   };
-  return (
-    <ApolloProvider client={client}>
-    <Router>
-    <>
-    <UserPreferenceProvider>
-      <Nav onBookNowClick={scrollToMassageSelector} />
-      <Hero onBookNowClick={scrollToMassageSelector} />
-      <Switch>
-        {/* links to the admin Services page */}
-        <Route exact path='/services' component={Services} /> 
-        {/* links the services page to the "add update service" window */}
-        <Route exact path='/addService' component={AddUpdateService} />
-      </Switch>
-      <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
-      <Booking title={title}/>
-      <Services/>
-      <AddUpdateService/>
 
-    </UserPreferenceProvider >
-    </>
-    </Router>
+  if (authStatus === 'checking') {
+    return <div>Loading...</div>; // or some loading spinner
+  }
+
+  return (
+  <ApolloProvider client={client}>
+      <Router>
+        <UserPreferenceProvider>
+        {authStatus === 'authenticated' && <Nav onBookNowClick={scrollToMassageSelector} />}
+          <Switch>
+            {/* Home page route */}
+            <Route exact path='/'>
+              <Hero onBookNowClick={scrollToMassageSelector} />
+              <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
+              <Booking title={title} />
+              <Footer />
+            </Route>
+
+            {/* Services page route */}
+            <Route exact path='/services' component={Services} /><Route/>
+            {/* Appointments page Route */}
+            <Route exact path='/booking' component={Services} /><Route/>
+            {/* Reviews page Route */}
+            <Route exact path='/reviews' component={Services} /><Route/>
+          </Switch>
+        </UserPreferenceProvider>
+      </Router>
     </ApolloProvider>
 
   )
