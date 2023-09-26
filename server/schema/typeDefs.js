@@ -26,11 +26,27 @@ const typeDefs = gql` #graphql
     min60: String!
     min90: String!
   }
+
+  type Appointment {
+    _id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+    date: String!
+    massage: String!
+    cupping: Boolean
+    contactMethod: String!
+    confirm: Boolean
+    rejected: Boolean
+  }
   
   type Query {
     services: [Service!]!
     service(id: ID!): Service
     me: User
+    appointments: [Appointment]
+    unconfirmedAppointments(confirm: Boolean): [Appointment]
   }
 
   type Mutation {

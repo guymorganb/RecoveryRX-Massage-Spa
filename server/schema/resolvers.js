@@ -2,6 +2,7 @@ import { signTheToken } from '../utils/authenticate.js'
 import { AuthenticationError } from 'apollo-server-express'
 import Service from "../models/services.js";
 import User from '../models/user.js'
+import Appointment from '../models/appointments.js';
 
 const resolvers = {
   Query: {
@@ -13,7 +14,6 @@ const resolvers = {
         throw new Error("Failed to fetch services.");
       }
     },
-  
     service: async (_, { id }) =>{
       try{
         return await Service.findById(id);
@@ -31,6 +31,22 @@ const resolvers = {
 
       } catch (error) {
         throw new Error(`User not found: ${error.message}`);
+      }
+    },
+    unconfirmedAppointments: async (_, {confirm}) => {
+      try {
+        return await Appointment.find({confirm});
+      } catch (error) {
+        console.log(error);
+        throw new Error("Failed to fetch appointments.");
+      }
+    },
+    appointments: async () => {
+      try {
+        return await Appointment.find({});
+      } catch (error) {
+        console.log(error);
+        throw new Error("Failed to fetch appointments.");
       }
     },
   },
