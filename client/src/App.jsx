@@ -6,7 +6,7 @@ import {UserPreferenceProvider} from './pages/MassageSelector/userContext'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {Services} from './pages/admin/services'
-import { AddUpdateService } from './pages/admin/addUpdateServices'
+import { Spinner, Flex } from "@chakra-ui/react";
 import { setContext } from '@apollo/client/link/context';
 import { Footer } from './pages/footer/footer'
 
@@ -38,19 +38,7 @@ const client = new ApolloClient({
 
 function App() {
   const [title, setTitle] = useState('');
-  const [authStatus, setAuthStatus] = useState('checking');
   const massageSelectorRef = useRef(null);
-
-  useEffect(() => {
-    // You would replace this with your actual authentication logic
-    const token = localStorage.getItem('id_token');
-    if (token) {
-      // Check if the token is valid, etc.
-      setAuthStatus('authenticated');
-    } else {
-      setAuthStatus('unauthenticated');
-    }
-  }, []);
 
   const scrollToMassageSelector = (e) => {
     e.preventDefault();
@@ -59,15 +47,11 @@ function App() {
     }
   };
 
-  if (authStatus === 'checking') {
-    return <div>Loading...</div>; // or some loading spinner
-  }
-
   return (
   <ApolloProvider client={client}>
       <Router>
         <UserPreferenceProvider>
-        {authStatus === 'authenticated' && <Nav onBookNowClick={scrollToMassageSelector} />}
+         <Nav onBookNowClick={scrollToMassageSelector} />
           <Switch>
             {/* Home page route */}
             <Route exact path='/'>
