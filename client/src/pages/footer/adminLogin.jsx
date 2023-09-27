@@ -5,7 +5,6 @@ import {LOGIN_USER} from '../../utils/mutations'
 import {
   Box,
   Text,
-  Alert,
   Button,
   Input,
   FormErrorMessage,
@@ -54,13 +53,12 @@ export const AdminLogin = ({ isOpen, onClose }) => {
     }
     //console.log("Logging in with", email, password);
   };
+  
 // sanitize input
   useEffect(() => {
     const result = emailReg.test(email);
     (result) ? setEmailError(false) : setEmailError(true)
     }, [email]);
-
-
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -70,10 +68,6 @@ export const AdminLogin = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <FormControl id="email" mb={4} isInvalid={emailError}>
-          <Alert dismissible 
-          onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your login credentials!
-        </Alert>
             <FormLabel>Email</FormLabel>
             <Input
               type="text"

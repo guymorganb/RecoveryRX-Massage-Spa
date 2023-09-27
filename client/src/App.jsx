@@ -38,7 +38,19 @@ const client = new ApolloClient({
 
 function App() {
   const [title, setTitle] = useState('');
+  const [authStatus, setAuthStatus] = useState('checking');
   const massageSelectorRef = useRef(null);
+
+  useEffect(() => {
+    // You would replace this with your actual authentication logic
+    const token = localStorage.getItem('id_token');
+    if (token) {
+      // Check if the token is valid, etc.
+      setAuthStatus('authenticated');
+    } else {
+      setAuthStatus('unauthenticated');
+    }
+  }, []);
 
   const scrollToMassageSelector = (e) => {
     e.preventDefault();
@@ -62,11 +74,11 @@ function App() {
             </Route>
 
             {/* Services page route */}
-            <Route exact path='/services' component={Services} /><Route/>
+            <Route exact path='/services' component={Services} />
             {/* Appointments page Route */}
-            <Route exact path='/booking' component={Services} /><Route/>
+            <Route exact path='/booking' component={Services} />
             {/* Reviews page Route */}
-            <Route exact path='/reviews' component={Services} /><Route/>
+            <Route exact path='/reviews' component={Services} />
           </Switch>
         </UserPreferenceProvider>
       </Router>
