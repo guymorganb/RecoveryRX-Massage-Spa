@@ -1,7 +1,7 @@
 {
     "name": "recoveryrx-massage-spa",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.0.0",
     "type": "module",
     "main": "server/server.js",
     "scripts": {
@@ -11,9 +11,6 @@
         
         
     },
-    "engines": {
-        "node": "18.x"
-     },
     "keywords": [],
     "author": "",
     "license": "ISC",
