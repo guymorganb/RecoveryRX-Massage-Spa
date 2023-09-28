@@ -4,6 +4,9 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import {Services} from './pages/admin/services'
 import Home from './pages/home/home';
+import { Spinner, Flex } from "@chakra-ui/react";
+import Appointments from './pages/admin/appointments.jsx';
+import { AddUpdateService } from './pages/admin/addUpdateServices'
 import { setContext } from '@apollo/client/link/context';
 import { useRef } from 'react'
 // Set up an Apollo client to point towards graphql backend
@@ -59,7 +62,23 @@ function App() {
     <ApolloProvider client={client}>
 
         <UserPreferenceProvider>
-         <RouterProvider router={router} />
+         <Nav onBookNowClick={scrollToMassageSelector} />
+          <Switch>
+            {/* Home page route */}
+            <Route exact path='/'>
+              <Hero onBookNowClick={scrollToMassageSelector} />
+              <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
+              <Booking title={title} />
+              <Footer />
+            </Route>
+
+            {/* Services page route */}
+            <Route exact path='/services' component={Services} />
+            {/* Appointments page Route */}
+            <Route exact path='/booking' component={Services} />
+            {/* Reviews page Route */}
+            <Route exact path='/reviews' component={Services} />
+          </Switch>
         </UserPreferenceProvider>
       
     </ApolloProvider>
