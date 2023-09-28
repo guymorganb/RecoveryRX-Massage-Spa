@@ -62,23 +62,7 @@ function App() {
     <ApolloProvider client={client}>
 
         <UserPreferenceProvider>
-         <Nav onBookNowClick={scrollToMassageSelector} />
-          <Switch>
-            {/* Home page route */}
-            <Route exact path='/'>
-              <Hero onBookNowClick={scrollToMassageSelector} />
-              <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
-              <Booking title={title} />
-              <Footer />
-            </Route>
-
-            {/* Services page route */}
-            <Route exact path='/services' component={Services} />
-            {/* Appointments page Route */}
-            <Route exact path='/booking' component={Services} />
-            {/* Reviews page Route */}
-            <Route exact path='/reviews' component={Services} />
-          </Switch>
+          <RouterProvider router={router}/>
         </UserPreferenceProvider>
       
     </ApolloProvider>
