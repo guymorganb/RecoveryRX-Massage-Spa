@@ -1,16 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
 import Nav from '../src/pages/Nav/Nav'
-import Hero from '../src/pages/Hero/Hero'
-import { MassageSelector } from '../src/pages/MassageSelector/massageSelector'
 import {UserPreferenceProvider} from './pages/MassageSelector/userContext'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import {Services} from './pages/admin/services'
-import { Spinner, Flex } from "@chakra-ui/react";
+import Home from './pages/home/home';
 import { setContext } from '@apollo/client/link/context';
-import { Footer } from './pages/footer/footer'
-
-import Booking from '../src/pages/Booking'
+import { useRef } from 'react'
 // Set up an Apollo client to point towards graphql backend
 const httpLink = createHttpLink({
   uri: 'http://localhost:3002/graphql', // GraphQL endpoint
@@ -37,20 +32,8 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const [title, setTitle] = useState('');
-  const [authStatus, setAuthStatus] = useState('checking');
-  const massageSelectorRef = useRef(null);
 
-  useEffect(() => {
-    // You would replace this with your actual authentication logic
-    const token = localStorage.getItem('id_token');
-    if (token) {
-      // Check if the token is valid, etc.
-      setAuthStatus('authenticated');
-    } else {
-      setAuthStatus('unauthenticated');
-    }
-  }, []);
+  const massageSelectorRef = useRef(null);
 
   const scrollToMassageSelector = (e) => {
     e.preventDefault();
@@ -59,29 +42,26 @@ function App() {
     }
   };
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route path="/" element= {<Nav onBookNowClick={scrollToMassageSelector} />}> Home
+          <Route index element={<Home />} />
+          <Route path='/services' element={<Services />} />
+          {/* Appointments page Route */}
+          {/* <Route exact path='/booking' component={<Services/>} /> */}
+          {/* Reviews page Route */}
+          {/* <Route exact path='/reviews' component={<Services/>} /> */}
+        </Route>
+  
+      )
+    )
   return (
-  <ApolloProvider client={client}>
-      <Router>
-        <UserPreferenceProvider>
-         <Nav onBookNowClick={scrollToMassageSelector} />
-          <Switch>
-            {/* Home page route */}
-            <Route exact path='/'>
-              <Hero onBookNowClick={scrollToMassageSelector} />
-              <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
-              <Booking title={title} />
-              <Footer />
-            </Route>
+    <ApolloProvider client={client}>
 
-            {/* Services page route */}
-            <Route exact path='/services' component={Services} />
-            {/* Appointments page Route */}
-            <Route exact path='/booking' component={Services} />
-            {/* Reviews page Route */}
-            <Route exact path='/reviews' component={Services} />
-          </Switch>
+        <UserPreferenceProvider>
+         <RouterProvider router={router} />
         </UserPreferenceProvider>
-      </Router>
+      
     </ApolloProvider>
 
   )
