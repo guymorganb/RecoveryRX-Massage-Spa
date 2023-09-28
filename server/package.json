@@ -5,8 +5,9 @@
     "type": "module",
     "main": "server.js",
     "scripts": {
-        "start": "npm install && node server.js",
-        "watch": "nodemon server.js"
+        "start": "node server.js",
+        "watch": "nodemon server.js",
+        "prestart": "ls node_modules"
     },
     "keywords": [],
     "author": "",
