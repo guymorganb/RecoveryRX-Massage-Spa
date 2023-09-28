@@ -8,10 +8,10 @@ import { AddUpdateService } from "./addUpdateServices.jsx";
 import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutations.jsx";
 import { GET_ME } from "../../utils/queries.jsx";
 import decode from 'jwt-decode'
-import { useHistory } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const ServiceBox = ({ id, title, description }) => {
-    const history = useHistory(); 
+    
     const { data, loading, error } = useQuery(GET_ME);
     const [authState, setAuthState] = useState('checking');
 
@@ -25,7 +25,7 @@ const ServiceBox = ({ id, title, description }) => {
           // No token in localStorage or token is expired.
           if (!token || (decodedToken && decodedToken.exp < (Date.now() / 1000))) {
               setAuthState('unauthenticated');
-              history.push("/");
+              redirect("/");
               return;
           }
       
@@ -36,7 +36,7 @@ const ServiceBox = ({ id, title, description }) => {
               
               if (!isAuth || !isAuth2) {
                   setAuthState('unauthenticated');
-                  history.push("/");
+                  redirect("/");
                   return;
               } else {
                   setAuthState('authenticated');

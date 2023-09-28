@@ -9,7 +9,7 @@ import {GET_SERVICES} from '../../utils/queries.jsx'
 import { get, set } from 'idb-keyval';
 import { transformData } from '../../utils/transformData.jsx'
 
-export const MassageSelector = forwardRef(({ setTitle }, ref) => {
+export const MassageSelector = React.forwardRef(({ setTitle }, ref) => {
 // const { loading, error, data } = useQuery(GET_SERVICES); // fetches data when component mounts
 const [getServices, { loading, error, data }] = useLazyQuery(GET_SERVICES);
 const [allServices, setAllServices] = useState([]); 
@@ -292,7 +292,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
                     boxSize={{ base: "75px", sm: "100px", md: "125px", lg: "125px", xl: "150px" }}
                     borderRadius="8px"
                     objectFit="cover"
-                    id={option.id}
+                    
                     src={option.image}
                     alt={option.title}
                     transition="transform 0.3s ease-in-out"

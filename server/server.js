@@ -2,6 +2,7 @@ import express  from "express";
 import { ApolloServer } from "apollo-server-express";
 import { config } from "dotenv";
 import path from "path";
+import { fileURLToPath } from 'url';
 import typeDefs from './schema/typeDefs.js'
 import resolvers from './schema/resolvers.js'
 //import { auth } from './utils/authenticate.js'
@@ -11,9 +12,10 @@ import emailjs from '@emailjs/nodejs';
 import mongoose from 'mongoose'
 import {auth} from "./utils/authenticate.js"
 
-config({
-  path: '../.env'
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+console.log(__dirname)
+config();
 
 const app = express();
 const PORT = process.env.PORT || 3001
@@ -68,15 +70,18 @@ app.use(express.json());
           );
         res.json({message: 'Everything went okay'});
       });
+        console.log("env" + process.env.NODE_ENV)
         
       // Serve static assets in production
       if (process.env.NODE_ENV === 'production') {
-        app.use(express.static(path.join(__dirname, '../client/build')));
+        app.use(express.static(path.join(__dirname, '../client/dist')));
         
         app.get('*', (req, res) => {
-          res.sendFile(path.join(__dirname, '../client/build/index.html'));
+          res.sendFile(path.join(__dirname, '../client/dist/index.html'));
         });
+
       }
+
       
       // Start the server
       app.listen(PORT, () => {
