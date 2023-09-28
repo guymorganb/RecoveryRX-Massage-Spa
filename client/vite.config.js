@@ -12,5 +12,9 @@ export default defineConfig({
            secure: false,
        }
   },
+  },
+  build: {
+    outDir: 'dist',  // The output directory for your build. Default is 'dist'.
+    sourcemap: true,  // Generate source maps.
   }
 })
