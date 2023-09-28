@@ -8,7 +8,7 @@ config({
 const connectDB = async () => {
     try {
 //console.log("mongo uri is:" + process.env.MONGODB_URI)
-        await mongoose.connect('mongodb+srv://guymorganb:aFNIQ5lxUCQ062b1@cluster0.xpeybn2.mongodb.net/FinalProject', {
+        await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
         });
