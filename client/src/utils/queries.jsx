@@ -39,3 +39,41 @@ export const GET_ME = gql` #graphql
     }
   }
 `;
+
+export const GET_ALL_APPOINTMENTS = gql` #graphql
+  # this is the description of the query
+  query Appointments {
+    appointments {
+      _id
+      firstName
+      lastName
+      email
+      phone
+      date
+      massage
+      cupping
+      contactMethod
+      confirm
+      rejected
+    }
+  }
+`;
+
+export const GET_UNCONFIRMED_APPOINTMENTS = gql` #graphql
+  # this is the description of the query
+  query UnconfirmedAppointments($confirm: Boolean!) {
+    unconfirmedAppointments(confirm: $confirm) {
+      _id
+      firstName
+      lastName
+      email
+      phone
+      date
+      massage
+      cupping
+      contactMethod
+      confirm
+      rejected
+    }
+  }
+`;

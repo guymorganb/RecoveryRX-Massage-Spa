@@ -7,6 +7,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {Services} from './pages/admin/services'
 import { Spinner, Flex } from "@chakra-ui/react";
+import Appointments from './pages/admin/appointments.jsx';
+import { AddUpdateService } from './pages/admin/addUpdateServices'
 import { setContext } from '@apollo/client/link/context';
 import { Footer } from './pages/footer/footer'
 
@@ -76,7 +78,7 @@ function App() {
             {/* Services page route */}
             <Route exact path='/services' component={Services} />
             {/* Appointments page Route */}
-            <Route exact path='/booking' component={Services} />
+            <Route exact path='/booking' component={Appointments} />
             {/* Reviews page Route */}
             <Route exact path='/reviews' component={Services} />
           </Switch>

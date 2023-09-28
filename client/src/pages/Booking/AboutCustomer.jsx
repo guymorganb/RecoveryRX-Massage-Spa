@@ -46,7 +46,7 @@ function AboutCustomer({title, selectedDate}) {
           formCount++;
         }
       })
-      if (formCount === 7) {
+      if (formCount === 8) {
         console.log('Form is complete');
         if(!firstNameError && !lastNameError && !emailError && !phoneError) {
           console.log('No errors');

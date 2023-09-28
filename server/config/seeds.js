@@ -1,6 +1,7 @@
-import Service from '../models/services.js'
+import Service from '../models/services.js';
 import mongoose from "mongoose";
-import User from '../models/user.js'
+import User from '../models/user.js';
+import Appointment from '../models/appointments.js';
 import SeedStatus from '../models/seedStatus.js';
 
 const seedDatabase = async () => {
@@ -9,6 +10,51 @@ const seedDatabase = async () => {
         try{
             await Service.deleteMany({});
             await User.deleteMany({});  // Clear existing users
+        await Appointment.deleteMany({});
+        await Appointment.insertMany([
+          {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@gmail.com',
+            phone: '303-123-4567',
+            date: '9/27/23',
+            massage: 'Oil Massage',
+            cupping: false,
+            contactMethod: 'email',
+          },
+          {
+            firstName: 'Jane',
+            lastName: 'Doe',
+            email: 'jane.doe@gmail.com',
+            phone: '303-246-1357',
+            date: '9/30/23',
+            massage: 'Stone Massage',
+            cupping: true,
+            contactMethod: 'text',
+          },
+          {
+            firstName: 'Jack',
+            lastName: 'Doe',
+            email: 'jack.doe@gmail.com',
+            phone: '303-234-1547',
+            date: '10/15/23',
+            massage: 'Hand Massage',
+            cupping: false,
+            contactMethod: 'call',
+            confirm: true
+          },
+          {
+            firstName: 'Jill',
+            lastName: 'Doe',
+            email: 'jill.doe@gmail.com',
+            phone: '303-210-5924',
+            date: '10/7/23',
+            massage: 'Foot Massage',
+            cupping: false,
+            contactMethod: 'email',
+            rejected: true
+          },
+        ])
         await Service.insertMany([
             {
                 title: "Swedish Massage",
