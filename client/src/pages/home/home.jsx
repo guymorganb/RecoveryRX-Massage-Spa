@@ -2,8 +2,9 @@ import Hero from "../Hero/Hero";
 import { MassageSelector } from "../MassageSelector/massageSelector";
 import Booking from "../Booking";
 import { Footer } from "../footer/footer";
+import Nav from "../Nav/Nav";
 import { useState, useRef, useEffect } from 'react'
-
+import { useLocation, Outlet} from 'react-router-dom';
 
 const Home = () =>{
     const massageSelectorRef = useRef(null);
@@ -32,10 +33,12 @@ const Home = () =>{
 
     return (
         <>
+            <Nav onBookNowClick={scrollToMassageSelector} />
             <Hero onBookNowClick={scrollToMassageSelector} />
             <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
             <Booking title={title} />
             <Footer />
+            {/* <Outlet /> */}
         </>
     );
 

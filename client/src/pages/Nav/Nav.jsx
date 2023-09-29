@@ -126,7 +126,7 @@ const Nav = ({ onBookNowClick, ref }) => {
         </Box>
       </VStack>
     </Box>
-  <Outlet />
+  {/* <Outlet /> */}
 </>
   );
 };

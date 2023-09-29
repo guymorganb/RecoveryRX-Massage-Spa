@@ -1,15 +1,18 @@
 import Nav from '../src/pages/Nav/Nav'
 import {UserPreferenceProvider} from './pages/MassageSelector/userContext'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
+import { Route, Routes, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import {Services} from './pages/admin/services'
 import Home from './pages/home/home';
 import Appointments from './pages/admin/appointments.jsx';
 import { setContext } from '@apollo/client/link/context';
 import { useRef } from 'react'
+
+import ProtectedRoutes from './pages/ProtectedRoutes/protectedRoutes';
+
 // Set up an Apollo client to point towards graphql backend
 const httpLink = createHttpLink({
-  uri: '/graphql', // GraphQL endpoint
+  uri: 'http://localhost:3002/graphql', // GraphQL endpoint
 });
 
 // context for JWT
@@ -34,28 +37,37 @@ const client = new ApolloClient({
 
 function App() {
 
-  const massageSelectorRef = useRef(null);
-
-  const scrollToMassageSelector = (e) => {
-    e.preventDefault();
-    if (massageSelectorRef.current) {
-      massageSelectorRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/" element= {<Nav onBookNowClick={scrollToMassageSelector} />}> Home
-          <Route index element={<Home />} />
-          <Route path='/services' element={<Services />} />
-          {/* Appointments page Route */}
-          <Route path='/booking' element={<Appointments/>} />
-          {/* Reviews page Route */}
-          {/* <Route exact path='/reviews' component={<Services/>} /> */}
-        </Route>
-  
+      <>
+        <Route path="/" index element={<Home />} />
+
+        <Route path="/services" element={<ProtectedRoutes element={<Services />} />} />
+          {/* create Service and booking routed in another route called protected routes */}
+         <Route path="/booking" element={<ProtectedRoutes element={<Appointments />} />} />
+            {/* Appointments page Route */}
+            {/* Reviews page Route */}
+            {/* <Route exact path='/reviews' component={<Services/>} /> */}
+      </>
       )
     )
+
+
+    // const router = createBrowserRouter(
+    //   createRoutesFromElements(
+    //       <Route path="/" element= {<Nav onBookNowClick={scrollToMassageSelector} />}> Home
+    //       {/* create Service and booking routed in another route called protected routes */}
+    //         <Route index element={<Home />} />
+    //         <Route path='/services' element={<Services />} />
+    //         {/* Appointments page Route */}
+    //         <Route path='/booking' element={<Appointments/>} />
+    //         {/* Reviews page Route */}
+    //         {/* <Route exact path='/reviews' component={<Services/>} /> */}
+    //       </Route>
+    //     )
+    //   )
+
   return (
     <ApolloProvider client={client}>
 

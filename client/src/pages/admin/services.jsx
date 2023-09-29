@@ -8,44 +8,36 @@ import { AddUpdateService } from "./addUpdateServices.jsx";
 import { UPDATE_SERVICE, ADD_SERVICE, DELETE_SERVICE } from "../../utils/mutations.jsx";
 import { GET_ME } from "../../utils/queries.jsx";
 import decode from 'jwt-decode'
-import { redirect } from "react-router-dom";
-
+import Nav from "../Nav/Nav.jsx";
 const ServiceBox = ({ id, title, description }) => {
     
-    const { data, loading, error } = useQuery(GET_ME);
-    const [authState, setAuthState] = useState('checking');
+    // const { data, loading, error } = useQuery(GET_ME);
+    
 
-      useEffect(() => {
-          // If data is still loading, do nothing.
-          if (loading) return;
-      
-          const token = localStorage.getItem('id_token');
-          const decodedToken = token && decode(token);
-      
-          // No token in localStorage or token is expired.
-          if (!token || (decodedToken && decodedToken.exp < (Date.now() / 1000))) {
-              setAuthState('unauthenticated');
-              redirect("/");
-              return;
-          }
-      
-          //  have a valid token, verify user data.
-          if (data && decodedToken) {
-              const isAuth = (decodedToken.data._id === data.me._id);
-              const isAuth2 = (decodedToken.data.email === data.me.email);
+    //   useEffect(() => {
+    //       // If data is still loading, do nothing.
+    //       if (loading) return;
+    //       const token = localStorage.getItem('id_token');
+    //       const decodedToken = token && decode(token);
+
+    //       // No token in localStorage or token is expired.
+    //       if (!token || (decodedToken && decodedToken.exp < (Date.now() / 1000))) {
+    //           console.log("If statment")
+    //           window.location.replace('/')
+    //         //   throw render('/')
+    //       }
+    //     //    have a valid token, verify user data.
+    //       if (data && decodedToken) {
+    //           const isAuth = (decodedToken.data._id === data.me._id);
+    //           const isAuth2 = (decodedToken.data.email === data.me.email);
               
-              if (!isAuth || !isAuth2) {
-                  setAuthState('unauthenticated');
-                  redirect("/");
-                  return;
-              } else {
-                  setAuthState('authenticated');
-              }
-          } else if (error) {
-              setAuthState('error');
-              console.error("Error fetching user:", error);
-          }
-      }, [data, loading, error]);
+    //           if (!isAuth || !isAuth2) {
+    //             window.location.replace('/')
+    //           }
+    //       } else if(error) {
+    //           console.error("Error fetching user:", error);
+    //       }
+    //   }, [data, loading, error]);
 
 const { isOpen, onOpen, onClose } = useDisclosure();
 const [updatedServiceId, setUpdatedServiceId] = useState(null);
@@ -250,6 +242,7 @@ useEffect(() => {
 console.log(massageServices)
 return (
     <>
+    <Nav/>
      {isLoading ? (
         <Flex d="flex" justifyContent="center" alignItems="center" width="100vw" height="100vh">
             <Spinner 
@@ -333,6 +326,7 @@ return (
             </Box>
 
         </VStack>
+       
     </Box>
      )}
     <AddUpdateService
