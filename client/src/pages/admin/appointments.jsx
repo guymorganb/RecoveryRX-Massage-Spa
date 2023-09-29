@@ -1,15 +1,42 @@
 import React, { useState }from "react";
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_UNCONFIRMED_APPOINTMENTS } from "../../utils/queries";
+import { UPDATE_APPOINTMENT, DELETE_APPOINTMENT } from "../../utils/mutations";
 import { Box, Text, Grid, GridItem, Button, Stack } from "@chakra-ui/react";
+import { redirect } from "react-router-dom";
 
 function Appointments() {
   const [confirm, setConfirm] = useState(false);
+  const location = useLocation();
 
   const { loading, data } = useQuery(GET_UNCONFIRMED_APPOINTMENTS, {
     variables: { confirm: confirm},
   });
 
+  const [updateAppointment, {error}] = useMutation(UPDATE_APPOINTMENT);
+  const [deleteAppointment, {err}] = useMutation(DELETE_APPOINTMENT);
+
+ async function confirmAppointment(event) {
+  try {
+    await updateAppointment({
+      variables: { _id: event.target.id, confirm: true },
+    });
+    redirect(document.location.href);
+  } catch (err) {
+    console.error(err);
+  }
+ }
+
+ async function rejectAppointment(event) {
+  try {
+    await deleteAppointment({
+      variables: { _id: event.target.id },
+    });
+    redirect(document.location.href);
+  } catch (err) {
+    console.error(err);
+  }
+ }
 
   const appointments = data?.unconfirmedAppointments || [];
   console.log(appointments);
@@ -58,7 +85,7 @@ function Appointments() {
         </Grid>
         {
           appointments.map((obj, index) => {
-            const {firstName, lastName, date, phone, email, massage} = obj;
+            const { _id, firstName, lastName, date, phone, email, massage} = obj;
             return <Box
               borderRadius={'1em'}
               border='1px'
@@ -89,7 +116,7 @@ function Appointments() {
                   </GridItem>
                   <GridItem colSpan={1} alignSelf={'center'} justifySelf={'end'}>
                   {
-                    confirm ? (
+                    obj.confirm ? (
                       <Stack spacing={4} direction='row' align='center'>
                         <Button colorScheme='blue' size={{ sm: "xs", md: "sm", xl: "md" }}>
                           Confirmed
@@ -97,10 +124,22 @@ function Appointments() {
                       </Stack>
                     ) : (
                       <Stack spacing={4} direction='row' align='center'>
-                        <Button colorScheme='green' variant='outline' size={{ sm: "xs", md: "sm", xl: "md" }}>
+                        <Button 
+                          id={_id}
+                          colorScheme='green' 
+                          variant='outline' 
+                          size={{ sm: "xs", md: "sm", xl: "md" }}
+                          onClick={confirmAppointment}
+                        >
                           Confirm
                         </Button>
-                        <Button colorScheme='red' variant='outline' size={{ sm: "xs", md: "sm", xl: "md" }}>
+                        <Button 
+                          id={_id}
+                          colorScheme='red' 
+                          variant='outline' 
+                          size={{ sm: "xs", md: "sm", xl: "md" }}
+                          onClick={rejectAppointment}
+                        >
                           Reject
                         </Button>
                       </Stack>

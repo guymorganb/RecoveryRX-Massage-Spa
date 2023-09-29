@@ -66,3 +66,34 @@ export const LOGIN_USER = gql`#graphql
     }
   }
 `;
+
+export const UPDATE_APPOINTMENT = gql`
+  mutation UpdateAppointment($_id: ID!, $confirm: Boolean!) {
+    updateAppointment(_id: $_id, confirm: $confirm) {
+      _id
+      firstName
+      lastName
+      email
+      phone
+      date
+      massage
+      cupping
+      contactMethod
+      confirm
+      rejected
+    }
+  }
+`;
+
+export const DELETE_APPOINTMENT = gql`
+  mutation DeleteAppointment($_id: ID!) {
+    deleteAppointment(_id: $_id) {
+      _id
+      firstName
+      email
+      phone
+      contactMethod
+      date
+    }
+  }
+`;
