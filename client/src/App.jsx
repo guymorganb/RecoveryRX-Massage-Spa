@@ -12,7 +12,7 @@ import ProtectedRoutes from './pages/ProtectedRoutes/protectedRoutes';
 
 // Set up an Apollo client to point towards graphql backend
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3002/graphql', // GraphQL endpoint
+  uri: '/graphql', // GraphQL endpoint
 });
 
 // context for JWT
