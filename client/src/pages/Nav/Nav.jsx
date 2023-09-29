@@ -29,7 +29,7 @@ const Nav = ({ onBookNowClick, ref }) => {
       bg="white"
       maxWidth="1280px" 
       width="100%">
-        <HStack width="100%" justifyContent="space-between" paddingX={{ base: '0', md: '8', lg: '12', xl: '16' }} alignItems="center">
+        <HStack width="100%" justifyContent="space-between" paddingX={{ base: '0', md: '8', lg: '12', xl: '16' }} alignItems="center" direction={{ base: "column", md: "row" }} >
           <HStack spacing={4}>
             <Image  
               boxSize={{ base: "0px",sm: "75px", md: "100px", lg: "100px" }}
@@ -50,11 +50,9 @@ const Nav = ({ onBookNowClick, ref }) => {
                 {onServicesRoute ? `RecoveryRx Massage ${formattedDate}`: `RecoveryRx Massage`}
             </Text>
           </HStack>
-          <HStack spacing={4}>
-            {location.pathname === '/' && <Flex 
-              spacing={4}
-              flexDirection={{ base: 'column', sm: 'column', md: "row" }}>
-              {['About', 'Services', 'Contact'].map(item => (
+          <HStack spacing={4} >
+          <Flex spacing={4} flexDirection={{ base: 'column', sm: 'column', md: "row" }} alignItems="center"> {location.pathname === '/' && 
+              ['About', 'Services', 'Contact'].map(item => (
                 <Text
                   key={item}
                   padding={{ base: '', sm: '1', md:'', lg: '3' }}
@@ -68,7 +66,7 @@ const Nav = ({ onBookNowClick, ref }) => {
                   <Link color='gray.500' href={`#${item}`} onClick={ scrollToMassageSelector }>{item}</Link>
                 </Text>
               ))}
-            </Flex>}
+            
 
            {onServicesRoute && <Box
               as='button' height='40px' lineHeight='1.0'
@@ -120,7 +118,7 @@ const Nav = ({ onBookNowClick, ref }) => {
                 boxShadow: '0 2px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(88, 144, 255, 0.1)'}}> 
               <Link color='white.500' href="#" onClick={ scrollToMassageSelector }>Book Now</Link>
             </Box>}
-
+            </Flex>
           </HStack>
         </HStack>
         <Box bg='white.100' width='100%' marginBottom={3}>
