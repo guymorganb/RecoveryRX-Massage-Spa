@@ -51,7 +51,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path='/services' element={<Services />} />
           {/* Appointments page Route */}
-          <Route exact path='/booking' component={<Appointments/>} />
+          <Route path='/booking' element={<Appointments/>} />
           {/* Reviews page Route */}
           {/* <Route exact path='/reviews' component={<Services/>} /> */}
         </Route>
