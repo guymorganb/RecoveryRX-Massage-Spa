@@ -1,13 +1,11 @@
-import mongoose from "mongoose";
 import { config } from "dotenv";
+import mongoose from "mongoose";
 
-config({
-    path: '../../.env'
-  });
+config();
 
 const connectDB = async () => {
     try {
-//console.log("mongo uri is:" + process.env.MONGODB_URI)
+// console.log(process.env)
         await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
