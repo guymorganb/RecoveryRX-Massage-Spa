@@ -7,7 +7,7 @@ import { redirect } from "react-router-dom";
 
 function Appointments() {
   const [confirm, setConfirm] = useState(false);
-  const location = useLocation();
+  
 
   const { loading, data } = useQuery(GET_UNCONFIRMED_APPOINTMENTS, {
     variables: { confirm: confirm},

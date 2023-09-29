@@ -5,7 +5,6 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import typeDefs from './schema/typeDefs.js'
 import resolvers from './schema/resolvers.js'
-//import { auth } from './utils/authenticate.js'
 import connectDB from './config/connection.js'
 import seedDatabase from './config/seeds.js'; 
 import emailjs from '@emailjs/nodejs';
@@ -14,11 +13,9 @@ import {auth} from "./utils/authenticate.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log(__dirname)
 config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 
 const app = express();
 const PORT = process.env.PORT || 3001
