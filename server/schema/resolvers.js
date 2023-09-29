@@ -106,6 +106,24 @@ const resolvers = {
       return { token, user };
 
     },
+    updateAppointment: async (_, { _id, confirm }) => {
+      try {
+        return await Appointment.findByIdAndUpdate({_id}, {confirm}, {
+          new: true
+        });
+      } catch (err) {
+        console.log(err);
+        throw new Error(`Failed to update appointment with id: ${_id}`);
+      }
+    },
+    deleteAppointment: async (_, { _id }) => {
+      try {
+        return await Appointment.findByIdAndRemove(_id);
+      } catch (err) {
+        console.log(err);
+        throw new Error(`Failed to delete Appointment with id: ${_id}`);
+      }
+    },
   }
 }; 
 export default resolvers;

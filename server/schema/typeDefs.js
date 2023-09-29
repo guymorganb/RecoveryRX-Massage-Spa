@@ -54,6 +54,8 @@ const typeDefs = gql` #graphql
     updateService(id: ID!, title: String, description: String, price:[PriceInput!]!, image: String): Service!
     deleteService(id: ID!): Service!
     loginUser(email: String!, password: String!): Auth
+    updateAppointment(_id: ID!, confirm: Boolean): Appointment
+    deleteAppointment(_id: ID!): Appointment
   }
   
   input PriceInput {
