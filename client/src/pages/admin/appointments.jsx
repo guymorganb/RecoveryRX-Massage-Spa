@@ -13,7 +13,6 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalCloseButton
 } from "@chakra-ui/react";
@@ -58,17 +57,11 @@ function Appointments() {
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={'6xl'}>
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Calendar</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <GenerateCalendar setSelectedDate={undefined} theme={'backEnd'} appointments={appointments}/>
+            <GenerateCalendar setSelectedDate={undefined} theme={'backEnd'} appointments={appointments} confirm={confirm}/>
           </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
       <Box

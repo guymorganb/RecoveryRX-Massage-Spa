@@ -8,7 +8,7 @@ const monthNumber = d.getMonth();
 const y = d.getFullYear();
 let selected, lastSelected, selectedDate;
 
-function GenerateCalendar({setSelectedDate, theme, appointments}) {
+function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
   let colorObj;
   if(theme == 'frontEnd') {
     colorObj = {
@@ -27,12 +27,13 @@ function GenerateCalendar({setSelectedDate, theme, appointments}) {
       var: 'ghost',
       selCol: 'white',
       lasCol: 'black',
-      appCol: 'yellow',
     }
     console.log('Admin pulled' + appointments);
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
+  let appCol;
+  (confirm) ? appCol = 'SpringGreen' : appCol='yellow'
 
   const [monthIndex, setMonthIndex] = useState(monthNumber);
   const [yearNumber, setYearNumber] = useState(y);
@@ -196,9 +197,9 @@ function GenerateCalendar({setSelectedDate, theme, appointments}) {
                   }}
                   onMouseLeave={() => {
                     lastSelected = undefined;
-                    selected.style.color = colorObj.appCol;
+                    selected.style.color = appCol;
                   }}>
-                  <Text color={colorObj.appCol}>
+                  <Text color={appCol}>
                     {item}
                   </Text>
                 </button>
