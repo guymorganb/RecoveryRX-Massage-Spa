@@ -16,7 +16,7 @@ import {
   ModalHeader,
   ModalCloseButton
 } from "@chakra-ui/react";
-import GenerateCalendar from "../../utils/generateCalendar";
+import GenerateCalendar from "../../utils/GenerateCalendar";
 
 function Appointments() {
   const [confirm, setConfirm] = useState(false);
