@@ -2,12 +2,26 @@ import React, { useState }from "react";
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_UNCONFIRMED_APPOINTMENTS } from "../../utils/queries";
 import { UPDATE_APPOINTMENT, DELETE_APPOINTMENT } from "../../utils/mutations";
-import { Box, Text, Grid, GridItem, Button, Stack } from "@chakra-ui/react";
-import { redirect } from "react-router-dom";
+import { 
+  Box,
+  Text,
+  Grid,
+  GridItem,
+  Button,
+  Stack,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalCloseButton
+} from "@chakra-ui/react";
+import GenerateCalendar from "../../utils/generateCalendar";
 
 function Appointments() {
   const [confirm, setConfirm] = useState(false);
-  
+  const { isOpen, onOpen, onClose } = useDisclosure();  
 
   const { loading, data } = useQuery(GET_UNCONFIRMED_APPOINTMENTS, {
     variables: { confirm: confirm},
@@ -21,7 +35,7 @@ function Appointments() {
     await updateAppointment({
       variables: { _id: event.target.id, confirm: true },
     });
-    redirect(document.location.href);
+    document.location.reload();
   } catch (err) {
     console.error(err);
   }
@@ -32,7 +46,7 @@ function Appointments() {
     await deleteAppointment({
       variables: { _id: event.target.id },
     });
-    redirect(document.location.href);
+    document.location.reload();
   } catch (err) {
     console.error(err);
   }
@@ -42,6 +56,21 @@ function Appointments() {
   console.log(appointments);
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose} size={'6xl'}>
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <GenerateCalendar setSelectedDate={undefined} theme={'backEnd'} appointments={appointments}/>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box
         py={'2em'}
         w={{ sm: "99%", md: "95%", xl: "90%" }}
@@ -77,7 +106,11 @@ function Appointments() {
                   }}>
                   Confirmed
                 </Button>
-                <Button colorScheme='teal' size={{ sm: "xs", md: "sm", xl: "md" }}>
+                <Button 
+                  colorScheme='teal' 
+                  size={{ sm: "xs", md: "sm", xl: "md" }}
+                  onClick={onOpen}
+                  >
                   Calendar
                 </Button>
               </Stack>
