@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
 import axios from 'axios';
 
-function AboutCustomer({title, selectedDate}) {
+function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
   const nameRegex = /[a-zA-Z]{3,}/;
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
@@ -13,6 +13,36 @@ function AboutCustomer({title, selectedDate}) {
   const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
   const [phoneError, setPhoneError] = useState(false);
   const [data, setData] = useState({});
+
+  const timeFrame = document.getElementById('timeframe');
+  const timeWindow = document.getElementById('timewindow');
+  const [tFrame, setTFrame] = useState('');
+
+  const _60minAppointments = [
+    '9:00a - 10:00a',
+    '10:00a - 11:00a',
+    '11:00a - 12:00p',
+    '12:00p - 1:00p',
+    '1:00p - 2:00p',
+    '2:00p - 3:00p',
+    '3:00p - 4:00p',
+    '4:00p - 5:00p',
+    '5:00p - 6:00p',
+    '6:00p - 7:00p',
+    '7:00p - 8:00p',
+    '8:00p - 9:00p',
+  ];
+
+  const _90minAppointments = [
+    '9:00a - 10:30a',
+    '10:30a - 12:00p',
+    '12:00p - 1:30p',
+    '1:30p - 3:00p',
+    '3:00p - 4:30p',
+    '4:30p - 6:00p',
+    '6:00p - 7:30p',
+    '7:30p - 9:00p',
+  ];
 
   function handleFNameInput(event) {
     const result = nameRegex.test(event.target.value);
@@ -46,7 +76,7 @@ function AboutCustomer({title, selectedDate}) {
           formCount++;
         }
       })
-      if (formCount === 8) {
+      if (formCount === 9) {
         console.log('Form is complete');
         if(!firstNameError && !lastNameError && !emailError && !phoneError) {
           console.log('No errors');
@@ -58,6 +88,7 @@ function AboutCustomer({title, selectedDate}) {
           });
           const obj = Object.fromEntries(dataArr);
           console.log(obj);
+          setFormSuccessfullySubmitted(true);
           if (completeForm) {
             axios.post('/api', {
               email: obj.email,
@@ -159,6 +190,46 @@ function AboutCustomer({title, selectedDate}) {
               value={selectedDate}
               className="form-item"
             />
+          </FormControl>
+          <FormControl
+          color={'black'}
+          pb={'1.5em'}
+          onChange={() => {
+            if (timeFrame.value !== '') {
+              setTFrame(timeFrame.value);
+            } else {
+              setTFrame('');
+            }
+          }}
+          >
+            <Select id={'timeframe'} placeholder="Please select a time frame?" name='timeframe' backgroundColor={'white'}>
+              <option value='60'>60 min</option>
+              <option value='90'>90 min</option>
+            </Select>
+            {
+              (tFrame) ? (
+                (tFrame == '60') ? (
+                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timewindow' backgroundColor={'white'} className='form-item'>
+                    {
+                      _60minAppointments.map((_60min) => {
+                        return <option key={_60min} value={_60min}>{_60min}</option>
+                      })
+                    }
+                  </Select>
+                ) : (
+                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timewindow' backgroundColor={'white'} className='form-item'>
+                    {
+                      _90minAppointments.map((_90min) => {
+                        return <option key={_90min} value={_90min}>{_90min}</option>
+                      })
+                    }
+                  </Select>
+                )
+              ) : (
+                <Select disabled={true} id={'timewindow'} placeholder="Please select an option above." name='timewindow' backgroundColor={'white'}>
+                </Select>
+              )
+            }
           </FormControl>
           <FormControl
           color={'black'}
