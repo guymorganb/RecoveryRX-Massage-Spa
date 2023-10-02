@@ -19,15 +19,16 @@ import {
   FormLabel
 } from "@chakra-ui/react";
 export const AdminLogin = ({ isOpen, onClose }) => {
-  
+
   const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
   const [loginUser, { loading: updateLoading, error: updateError }] = useMutation(LOGIN_USER);
-  
+  const[errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     // Here, you can handle the login logic
@@ -45,7 +46,7 @@ export const AdminLogin = ({ isOpen, onClose }) => {
         window.location.replace('/services') // send the logged in user to "/"
       }catch (e) {
         // login failure, throw an alert
-        console.error(e);
+        setErrorMessage(e.message)
         setShowAlert(true);
       }
     } else{
@@ -81,15 +82,19 @@ export const AdminLogin = ({ isOpen, onClose }) => {
               <FormErrorMessage>Invalid Email Address</FormErrorMessage>
             )}
           </FormControl>
-          <FormControl id="password" >
-            <FormLabel>Password</FormLabel>
+          <FormControl id="password" isInvalid={errorMessage}>
+          <FormLabel>Password</FormLabel>
             <Input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
             />
-            
+            {!errorMessage ? (
+              <div></div>
+              ) : (
+              <FormErrorMessage>{errorMessage}</FormErrorMessage>
+            )}
           </FormControl>
         </ModalBody>
         <ModalFooter>
