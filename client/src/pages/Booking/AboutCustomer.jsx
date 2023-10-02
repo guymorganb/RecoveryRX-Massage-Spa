@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Box, Text, FormControl, FormErrorMessage, Input, Select, Button} from "@chakra-ui/react";
 import axios from 'axios';
+import { ADD_APPOINTMENT } from "../../utils/mutations";
+import { useMutation } from "@apollo/client";
 
 function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
   const nameRegex = /[a-zA-Z]{3,}/;
@@ -17,6 +19,8 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
   const timeFrame = document.getElementById('timeframe');
   const timeWindow = document.getElementById('timewindow');
   const [tFrame, setTFrame] = useState('');
+
+  const [addAppointment, {error}] = useMutation(ADD_APPOINTMENT);
 
   const _60minAppointments = [
     '9:00a - 10:00a',
@@ -64,6 +68,26 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
     (!result) ? setPhoneError(true) : setPhoneError(false);
   }
 
+  async function uploadAppointment(form) {
+    try {
+      await addAppointment({
+        variables: { 
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          date: form.date,
+          massage: form.massage,
+          cupping: form.cupping,
+          contactMethod: form.contactMethod,
+          timeWindow: form.timeWindow
+         },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+   }
+
   function submitData(event) {
     if (event) {
       let completeForm = false;
@@ -81,14 +105,23 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
         if(!firstNameError && !lastNameError && !emailError && !phoneError) {
           console.log('No errors');
           console.log('Ready to send data');
-          // completeForm = true;
+          completeForm = true;
           const dataArr =[];
           formArr.forEach((item) => {
-              dataArr.push([item.name, item.value]);
+            (item.name === 'cupping') ? (
+              (item.value === 'yes') ? (
+                dataArr.push([item.name, true])
+              ) : (
+                dataArr.push([item.name, false])
+              )
+            ) : (
+              dataArr.push([item.name, item.value])
+            )
           });
           const obj = Object.fromEntries(dataArr);
           console.log(obj);
           setFormSuccessfullySubmitted(true);
+          uploadAppointment(obj);
           if (completeForm) {
             axios.post('/api', {
               email: obj.email,
@@ -209,7 +242,7 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
             {
               (tFrame) ? (
                 (tFrame == '60') ? (
-                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timewindow' backgroundColor={'white'} className='form-item'>
+                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timeWindow' backgroundColor={'white'} className='form-item'>
                     {
                       _60minAppointments.map((_60min) => {
                         return <option key={_60min} value={_60min}>{_60min}</option>
@@ -217,7 +250,7 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
                     }
                   </Select>
                 ) : (
-                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timewindow' backgroundColor={'white'} className='form-item'>
+                  <Select disabled={false} id={'timewindow'} placeholder="Please select a time window?" name='timeWindow' backgroundColor={'white'} className='form-item'>
                     {
                       _90minAppointments.map((_90min) => {
                         return <option key={_90min} value={_90min}>{_90min}</option>
@@ -226,7 +259,7 @@ function AboutCustomer({title, selectedDate, setFormSuccessfullySubmitted}) {
                   </Select>
                 )
               ) : (
-                <Select disabled={true} id={'timewindow'} placeholder="Please select an option above." name='timewindow' backgroundColor={'white'}>
+                <Select disabled={true} id={'timewindow'} placeholder="Please select an option above." name='timeWindow' backgroundColor={'white'}>
                 </Select>
               )
             }

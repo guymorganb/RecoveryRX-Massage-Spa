@@ -21,6 +21,7 @@ const seedDatabase = async () => {
             massage: 'Oil Massage',
             cupping: false,
             contactMethod: 'email',
+            timeWindow: '9:00a - 10:00a',
           },
           {
             firstName: 'Jane',
@@ -31,6 +32,7 @@ const seedDatabase = async () => {
             massage: 'Stone Massage',
             cupping: true,
             contactMethod: 'text',
+            timeWindow: '9:00a - 10:00a',
           },
           {
             firstName: 'Jack',
@@ -41,7 +43,8 @@ const seedDatabase = async () => {
             massage: 'Hand Massage',
             cupping: false,
             contactMethod: 'call',
-            confirm: true
+            confirm: true, 
+            timeWindow: '9:00a - 10:00a',
           },
           {
             firstName: 'Jill',
@@ -52,7 +55,8 @@ const seedDatabase = async () => {
             massage: 'Foot Massage',
             cupping: false,
             contactMethod: 'email',
-            rejected: true
+            rejected: true, 
+            timeWindow: '9:00a - 10:00a',
           },
         ])
         await Service.insertMany([

@@ -124,6 +124,26 @@ const resolvers = {
         throw new Error(`Failed to delete Appointment with id: ${_id}`);
       }
     },
+    addAppointment: async (_, args) => {
+      try {
+        const appointment = new Appointment({
+          firstName: args.firstName,
+          lastName: args.lastName,
+          email: args.email,
+          phone: args.phone,
+          date: args.date,
+          massage: args.massage,
+          cupping: args.cupping,
+          contactMethod: args.contactMethod,
+          timeWindow: args.timeWindow
+        });
+  
+        return await appointment.save();
+      } catch (error) {
+        console.log(error)
+        throw new Error("Failed to add service.");
+      }
+    },
   }
 }; 
 export default resolvers;
