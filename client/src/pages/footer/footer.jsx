@@ -30,7 +30,7 @@ export const Footer = React.forwardRef((props, ref) => {
             mx="auto"
             borderRadius="8" />
           </Box>
-          <Flex direction="row" justify="space-around">
+          <Flex direction="row" justify="space-around" ref={ref}>
             <SimpleGrid columns={1} spacing={10}>
               <Text color="#ffffff" fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }} textAlign="center">
                 Give us a call
