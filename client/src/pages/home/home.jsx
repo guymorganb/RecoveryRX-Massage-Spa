@@ -8,6 +8,7 @@ import { useLocation, Outlet} from 'react-router-dom';
 
 const Home = () =>{
     const massageSelectorRef = useRef(null);
+    const contactRef = useRef(null);
     const [title, setTitle] = useState('');
 
     const [authStatus, setAuthStatus] = useState('checking');
@@ -24,20 +25,25 @@ const Home = () =>{
       }
     }, []);
 
-    const scrollToMassageSelector = (e) => {
+    const scrollTo = (e) => {
         e.preventDefault();
+        const clickedItem = e.target.innerHTML;
         if (massageSelectorRef.current) {
           massageSelectorRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (contactRef.current && clickedItem === 'Contact') {
+          console.log(clickedItem)
+            contactRef.current.scrollIntoView({ behavior: 'smooth' });
         }
       };
 
     return (
         <>
-            <Nav onBookNowClick={scrollToMassageSelector} />
-            <Hero onBookNowClick={scrollToMassageSelector} />
+            <Nav onBookNowClick={scrollTo} />
+            <Hero onBookNowClick={scrollTo} />
             <MassageSelector ref={massageSelectorRef} setTitle={setTitle} />
             <Booking title={title} />
-            <Footer />
+            <Footer ref={contactRef}/>
             {/* <Outlet /> */}
         </>
     );

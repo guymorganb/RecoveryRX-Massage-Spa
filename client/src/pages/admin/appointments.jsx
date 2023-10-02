@@ -2,6 +2,8 @@ import React, { useState }from "react";
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_UNCONFIRMED_APPOINTMENTS } from "../../utils/queries";
 import { UPDATE_APPOINTMENT, DELETE_APPOINTMENT } from "../../utils/mutations";
+import Nav from "../Nav/Nav";
+import AdminFooter from "./adminFooter";
 import { 
   Box,
   Text,
@@ -14,9 +16,10 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-  ModalCloseButton
+  ModalCloseButton,
+  Flex
 } from "@chakra-ui/react";
-import GenerateCalendar from "../../utils/generateCalendar";
+import GenerateCalendar from "../../utils/GenerateCalendar";
 
 function Appointments() {
   const [confirm, setConfirm] = useState(false);
@@ -55,6 +58,10 @@ function Appointments() {
   console.log(appointments);
   return (
     <>
+  <Flex direction="column" minH="100vh">
+
+     <Nav/>
+
       <Modal isOpen={isOpen} onClose={onClose} size={'6xl'}>
         <ModalContent>
           <ModalHeader>Calendar</ModalHeader>
@@ -64,11 +71,7 @@ function Appointments() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Box
-        py={'2em'}
-        w={{ sm: "99%", md: "95%", xl: "90%" }}
-        mx={'auto'}
-      >
+      <Box flex="1" py={'2em'} w={{ sm: "99%", md: "95%", xl: "90%" }} mx={'auto'}> 
         <Grid
           templateColumns='repeat(5, 1fr)'
           w={'95%'}
@@ -177,6 +180,8 @@ function Appointments() {
           })
         }
       </Box>
+      <AdminFooter/>
+      </Flex>
     </>
   );
 }

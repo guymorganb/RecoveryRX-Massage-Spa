@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
-import GenerateCalendar from "../../utils/generateCalendar";
+import GenerateCalendar from "../../utils/GenerateCalendar";
 
 function Calendar({setSelectedDate}) {
   return (

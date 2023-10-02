@@ -3,8 +3,9 @@ import React from "react";
 import { Box, Text, Flex, Image, ListItem, useDisclosure, List, Link, HStack  } from "@chakra-ui/react";
 import { AdminLogin } from "./adminLogin.jsx";
 
-
-export const Footer = () => {
+// if you remove props, bad things happen, even if props shows that its not being used here
+// it has something to do with how refs are passed
+export const Footer = React.forwardRef((props, ref) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -29,7 +30,7 @@ export const Footer = () => {
             mx="auto"
             borderRadius="8" />
           </Box>
-          <Flex direction="row" justify="space-around">
+          <Flex direction="row" justify="space-around" ref={ref}>
             <Text color="#ffffff" fontSize="32px" textAlign="center">
               Give us a call
               <List fontSize="14px" >
@@ -117,4 +118,4 @@ export const Footer = () => {
         />
     </>
   );
-};
+});

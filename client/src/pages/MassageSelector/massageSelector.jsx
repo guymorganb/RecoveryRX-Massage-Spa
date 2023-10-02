@@ -4,7 +4,7 @@ import { Stack, Flex, Grid, Select, HStack, Text, Box, Image, Checkbox } from '@
 import { useUserPreferenceContext } from './userContext'
 import {reducer} from './reducers'
 import {ADD_EXPERIENCE, ADD_MASSAGE_TYPE, ADD_INTENSITY, ADD_LOOKING_FOR, ADD_WHERESYOUR_PAIN} from './actions'
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import {GET_SERVICES} from '../../utils/queries.jsx'
 import { get, set } from 'idb-keyval';
 import { transformData } from '../../utils/transformData.jsx'
