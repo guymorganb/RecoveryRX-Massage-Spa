@@ -46,6 +46,7 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
     items.push(...element);
   });
   let { weekdaysAbbr } = cal;
+  const [drawerText, setDrawerText] = useState('');
 
   return (
     <div>
@@ -178,10 +179,13 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
         ) : (
           (appointmentFound) ? (
             (
-              <>
+              <div key={index}>
                 <button 
                   ref={btnRef} 
-                  onClick={onOpen} 
+                  onClick={(event) => {
+                    onOpen();
+                    setDrawerText(event.target.parentNode.value);
+                  }} 
                   key={index}
                   onMouseEnter={(event) => {
                     if(!lastSelected) {
@@ -198,7 +202,8 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                   onMouseLeave={() => {
                     lastSelected = undefined;
                     selected.style.color = appCol;
-                  }}>
+                  }}
+                  value={toolTipAppointment}>
                   <Text color={appCol}>
                     {item}
                   </Text>
@@ -213,11 +218,11 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                   <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerBody>
-                      {toolTipAppointment}
+                      {drawerText}
                     </DrawerBody>
                   </DrawerContent>
                 </Drawer>
-              </>
+              </div>
             )
           ) : (
             (<button 
