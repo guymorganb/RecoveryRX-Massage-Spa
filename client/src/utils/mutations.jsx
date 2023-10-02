@@ -97,3 +97,19 @@ export const DELETE_APPOINTMENT = gql`
     }
   }
 `;
+
+export const ADD_APPOINTMENT = gql`
+  mutation Mutation($firstName: String!, $lastName: String!, $email: String!, $phone: String!, $date: String!, $massage: String!, $contactMethod: String!, $cupping: Boolean, $timeWindow: String) {
+    addAppointment(firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, date: $date, massage: $massage, contactMethod: $contactMethod, cupping: $cupping, timeWindow: $timeWindow) {
+      firstName
+      lastName
+      email
+      phone
+      date
+      massage
+      cupping
+      contactMethod
+      timeWindow
+    }
+  }
+`;

@@ -61,6 +61,10 @@ const appointmentSchema = new Schema({
   rejected: {
     type: Boolean,
     default: false,
+  },
+  timeWindow: {
+    type: String,
+    required: [true, 'Time window required'],
   }
 });
 

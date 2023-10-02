@@ -39,6 +39,7 @@ const typeDefs = gql` #graphql
     contactMethod: String!
     confirm: Boolean
     rejected: Boolean
+    timeWindow: String
   }
   
   type Query {
@@ -56,6 +57,17 @@ const typeDefs = gql` #graphql
     loginUser(email: String!, password: String!): Auth
     updateAppointment(_id: ID!, confirm: Boolean): Appointment
     deleteAppointment(_id: ID!): Appointment
+    addAppointment(
+      firstName: String!,
+      lastName: String!,
+      email: String!,
+      phone: String!,
+      date: String!,
+      massage: String!,
+      cupping: Boolean,
+      contactMethod: String!,
+      timeWindow: String
+      ): Appointment
   }
   
   input PriceInput {
