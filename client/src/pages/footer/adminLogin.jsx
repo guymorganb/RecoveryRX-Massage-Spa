@@ -30,6 +30,15 @@ export const AdminLogin = ({ isOpen, onClose }) => {
   const [loginUser, { loading: updateLoading, error: updateError }] = useMutation(LOGIN_USER);
   const[errorMessage, setErrorMessage] = useState("");
 
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  function handleEmailInput(event) {
+    const result = emailRegex.test(event.target.value);
+    (!result) ? (setEmailError(true)) : (
+      setEmailError(false),
+      setEmail(event.target.value)
+    );
+  }
+
   const handleLogin = async () => {
     // Here, you can handle the login logic
     
@@ -54,12 +63,6 @@ export const AdminLogin = ({ isOpen, onClose }) => {
     }
     //console.log("Logging in with", email, password);
   };
-  
-// sanitize input
-  useEffect(() => {
-    const result = emailReg.test(email);
-    (result) ? setEmailError(false) : setEmailError(true)
-    }, [email]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -70,15 +73,10 @@ export const AdminLogin = ({ isOpen, onClose }) => {
         <ModalBody>
           <FormControl id="email" mb={4} isInvalid={emailError}>
             <FormLabel>Email</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Input type='email' placeholder="Email" onChange={handleEmailInput}/>
             {!emailError ? (
               <div></div>
-              ) : (
+            ) : (
               <FormErrorMessage>Invalid Email Address</FormErrorMessage>
             )}
           </FormControl>

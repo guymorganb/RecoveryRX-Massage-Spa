@@ -17,6 +17,10 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
+  VStack,
+  HStack,
+  Link,
+  Image,
   Flex
 } from "@chakra-ui/react";
 import GenerateCalendar from "../../utils/GenerateCalendar";
@@ -59,9 +63,7 @@ function Appointments() {
   return (
     <>
   <Flex direction="column" minH="100vh">
-
      <Nav/>
-
       <Modal isOpen={isOpen} onClose={onClose} size={'6xl'}>
         <ModalContent>
           <ModalHeader>Calendar</ModalHeader>
@@ -113,7 +115,9 @@ function Appointments() {
           </GridItem>
         </Grid>
         {
-          appointments.map((obj, index) => {
+          (appointments.length !== 0) ? (
+            appointments.map((obj, index) => {
+            console.log('index is ' + index);
             const { _id, firstName, lastName, date, phone, email, massage} = obj;
             return <Box
               borderRadius={'1em'}
@@ -178,10 +182,41 @@ function Appointments() {
                 </Grid>
               </Box>
           })
+          ) : (
+            <div>
+              <Box
+                py={'2em'}
+                w={{ sm: "95%", md: "90%", xl: "85%" }}
+                mx={'auto'}
+                >
+                  <Box
+                  textAlign={'center'}
+                  backgroundColor={'#fbdebb'}
+                  borderRadius={'1em'}
+                  py={'10em'}
+                  px={'15em'}
+                  color={'black'}
+                  >
+                    <Text
+                    fontSize={{ sm: "1em", md: "1.50em", xl: "2em" }}
+                    pb={'2em'}
+                    >
+                      <b>There is no data to display!</b>
+                    </Text>
+                    <Text
+                    fontSize={{ sm: "1em", md: "1.25em", xl: "1.50em" }}
+                    >
+                      There is no data to display. This may be because all appointments have been resolved or there is an 
+                      error with pulling from the database.
+                    </Text>
+                  </Box>
+              </Box>
+              </div>
+          )
         }
       </Box>
-      <AdminFooter/>
-      </Flex>
+      <AdminFooter />
+    </Flex>
     </>
   );
 }

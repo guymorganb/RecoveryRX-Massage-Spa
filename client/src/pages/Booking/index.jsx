@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function Booking({title}) {
   const [selectedDate, setSelectedDate] = useState('');
+  const [formSuccessfullySubmitted, setFormSuccessfullySubmitted] = useState(false);
   return ( 
     <div>
       <Box
@@ -15,9 +16,16 @@ function Booking({title}) {
       py={'2em'}
       >
         <Title />
-        <Calendar setSelectedDate={setSelectedDate}/>
-        <AboutCustomer title={title} selectedDate={selectedDate}/>
-        <Confirmation />
+        {
+          (!formSuccessfullySubmitted) ? (
+            <>
+              <Calendar setSelectedDate={setSelectedDate}/>
+              <AboutCustomer title={title} selectedDate={selectedDate} setFormSuccessfullySubmitted={setFormSuccessfullySubmitted}/>
+            </>
+          ) : (
+            <Confirmation />
+          )
+        }
       </Box>
     </div>
   );
