@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Box, Text, Flex, Image, ListItem, useDisclosure, List, Link, HStack  } from "@chakra-ui/react";
+import { Box, Text, Flex, Image, ListItem, useDisclosure, List, Link, HStack, SimpleGrid } from "@chakra-ui/react";
 import { AdminLogin } from "./adminLogin.jsx";
 
 // if you remove props, bad things happen, even if props shows that its not being used here
@@ -30,33 +30,39 @@ export const Footer = React.forwardRef((props, ref) => {
             mx="auto"
             borderRadius="8" />
           </Box>
-          <Flex direction="row" justify="space-around" ref={ref}>
-            <Text color="#ffffff" fontSize="32px" textAlign="center">
-              Give us a call
-              <List fontSize="14px" >
+          <Flex direction="row" justify="space-around">
+            <SimpleGrid columns={1} spacing={10}>
+              <Text color="#ffffff" fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }} textAlign="center">
+                Give us a call
+              </Text>
+              <List fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }} color={'white'}>
                 <ListItem >(956) 533-3194</ListItem>
-            </List>
-            </Text>
-            <Text color="#ffffff" fontSize="32px" textAlign="center">
-              Stop By<br></br>
-              <List fontSize="14px" >
-                <ListItem >713 N Ware Road Ste 6</ListItem>
-                <ListItem>McAllen, TX 78501</ListItem>
-                <ListItem>USA</ListItem>
-            </List>
-            </Text>
-            <Text color="#ffffff" fontSize="32px" textAlign="center">
-              Hours of operation
-            <List fontSize="14px" mb="4">
-                <ListItem >Mon:  9:00 AM – 9:00 PM</ListItem>
-                <ListItem>Tue:    9:00 AM – 9:00 PM</ListItem>
-                <ListItem>Wed:  9:00 AM – 9:00 PM</ListItem>
-                <ListItem>Thu:   9:00 AM – 9:00 PM</ListItem>
-                <ListItem>Fri:    9:00 AM – 9:00 PM</ListItem>
-                <ListItem>Sat:   9:00 AM – 3:00 PM</ListItem>
-                <ListItem>Sun:   Closed</ListItem>
-            </List>
-            </Text>
+              </List>
+            </SimpleGrid>
+            <SimpleGrid columns={1} spacing={10}>
+              <Text color="#ffffff" fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }} textAlign="center">
+                Stop By
+              </Text>
+              <List fontSize={{ sm: "1em", md: "1.25em", xl: "1.5em" }} color={'white'}>
+                  <ListItem >713 N Ware Road Ste 6</ListItem>
+                  <ListItem>McAllen, TX 78501</ListItem>
+                  <ListItem>USA</ListItem>
+              </List>
+            </SimpleGrid>
+            <SimpleGrid columns={1} spacing={10}>
+              <Text color="#ffffff" fontSize="32px" textAlign="center">
+                Hours of operation
+              </Text>
+              <List fontSize="14px" mb="4" color={'white'}>
+                  <ListItem >Mon:  9:00 AM – 9:00 PM</ListItem>
+                  <ListItem>Tue:    9:00 AM – 9:00 PM</ListItem>
+                  <ListItem>Wed:  9:00 AM – 9:00 PM</ListItem>
+                  <ListItem>Thu:   9:00 AM – 9:00 PM</ListItem>
+                  <ListItem>Fri:    9:00 AM – 9:00 PM</ListItem>
+                  <ListItem>Sat:   9:00 AM – 3:00 PM</ListItem>
+                  <ListItem>Sun:   Closed</ListItem>
+              </List>
+            </SimpleGrid>
           </Flex>
         </Box>
         
@@ -64,22 +70,22 @@ export const Footer = React.forwardRef((props, ref) => {
           <Box >
             {/* Replace with your image source */}
             <Image src='https://i.imgur.com/tTbzG1j.jpg' 
-            alt="Some Image" 
-            boxSize="300px" 
-            mx="auto" 
+            alt="Some Image"
+            boxSize="300px"
+            mx="auto"
             borderRadius="8"/>
           </Box>
-          <Text fontSize="36px" color="#ffffff" textAlign="center" pt="16">
-            Recovery Rx Massage
-          </Text>
-          <Text fontSize="36px" color="#ffffff" textAlign="center" mt="4" mb="2">
-          <List fontSize="14px" >
-                <ListItem >713 N Ware Road Ste 6</ListItem>
-                <ListItem>McAllen, TX 78501</ListItem>
-                <ListItem>USA</ListItem>
+          <SimpleGrid columns={1} spacing={10}>
+            <Text fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }} color="#ffffff" textAlign="center" pt="16">
+              Recovery Rx Massage
+            </Text>
+            <List fontSize={{ sm: "1em", md: "1.25em", xl: "1.5em" }} color={'white'} >
+              <ListItem >713 N Ware Road Ste 6</ListItem>
+              <ListItem>McAllen, TX 78501</ListItem>
+              <ListItem>USA</ListItem>
             </List>
-          </Text>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+          </SimpleGrid>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" mt={'1em'}>
           <HStack 
                 spacing={4} 
                 mb={12}>

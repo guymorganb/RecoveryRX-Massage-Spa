@@ -13,7 +13,7 @@ function Confirmation () {
         fontSize={{ sm: "1em", md: "1.5em", xl: "2em" }}
         py={'1em'}
         >
-          Step 1: Select a Date
+          Step 3: Confirmation
         </Text>
         <Box
         textAlign={'center'}
@@ -32,8 +32,8 @@ function Confirmation () {
           <Text
           fontSize={{ sm: "1em", md: "1.25em", xl: "1.50em" }}
           >
-          One of our specialists will reach out to you shortly to confirm your appointment and collect some additional 
-          information prior to your visit.
+            One of our specialists will reach out to you shortly to confirm your appointment and collect some additional 
+            information prior to your visit.
           </Text>
         </Box>
     </Box>
