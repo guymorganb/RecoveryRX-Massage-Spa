@@ -113,6 +113,23 @@ export const Footer = React.forwardRef((props, ref) => {
           cursor="pointer">
             Admin Login
           </Link>
+          <Link 
+          px={2}
+          fontSize="10px" 
+          color="#ffffff" 
+          textAlign="center"  
+          href="/privacy"
+          cursor="pointer">
+            Privacy Policy
+          </Link>
+          <Link 
+          fontSize="10px" 
+          color="#ffffff" 
+          textAlign="center"  
+          href="/terms"
+          cursor="pointer">
+            Terms of Use
+          </Link>
 
         </Box>
       </Box>
