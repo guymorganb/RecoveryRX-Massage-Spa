@@ -6,8 +6,8 @@ import {Services} from './pages/admin/services'
 import Home from './pages/home/home';
 import Appointments from './pages/admin/appointments.jsx';
 import { setContext } from '@apollo/client/link/context';
-import { useRef } from 'react'
-
+import PrivacyPolicy from './pages/admin/privacyPolicy';
+import TermsAndConditions from './pages/admin/termAndConditions';
 import ProtectedRoutes from './pages/ProtectedRoutes/protectedRoutes';
 
 // Set up an Apollo client to point towards graphql backend
@@ -42,13 +42,18 @@ function App() {
     createRoutesFromElements(
       <>
         <Route path="/" index element={<Home />} />
-
-        <Route path="/services" element={<ProtectedRoutes element={<Services />} />} />
           {/* create Service and booking routed in another route called protected routes */}
-         <Route path="/booking" element={<ProtectedRoutes element={<Appointments />} />} />
-            {/* Appointments page Route */}
-            {/* Reviews page Route */}
-            {/* <Route exact path='/reviews' component={<Services/>} /> */}
+        <Route path="/services" element={<ProtectedRoutes element={<Services />} />} />
+          {/* Appointments page Route */}
+        <Route path="/booking" element={<ProtectedRoutes element={<Appointments />} />} />
+
+          {/* Reviews page Route */}
+          {/* <Route path="/reviews" element={<ProtectedRoutes element={<Reviews />} />} /> */}
+
+          {/* Privacy Policy Route */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          {/* Terms of use Route */}
+          <Route path="/terms" element={<TermsAndConditions />} />
       </>
       )
     )
