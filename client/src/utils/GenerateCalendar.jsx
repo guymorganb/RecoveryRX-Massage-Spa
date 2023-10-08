@@ -8,6 +8,43 @@ const monthNumber = d.getMonth();
 const y = d.getFullYear();
 let selected, lastSelected, selectedDate;
 
+function timeSort(arr) {
+  const am = /a/;
+  const pm = /p/;
+  const hour = /\d+/;
+  const minutes = /(?<=:)\d+/;
+  const amTimes = [];
+  const pmTimes = [];
+
+  function compareTimes(a, b) {
+    let hourResultA = hour.exec(a.time);
+    let hourResultB = hour.exec(b.time);
+  
+    let minuteResultA = minutes.exec(a.time);
+    let minuteResultB = minutes.exec(b.time);
+  
+    let decA = Number(minuteResultA) === 30 ? .5 : 0;
+    let decB = Number(minuteResultB) === 30 ? .5 : 0;
+  
+    let aNum = Number(hourResultA[0]) + decA;
+    let bNum = Number(hourResultB[0]) + decB;
+  
+    return aNum - bNum;
+  }
+
+  arr.forEach((app) => {
+    let result = am.test(app.time);
+    
+    (result) ? amTimes.push(app) : (pmTimes.push(app));
+  });
+
+  amTimes.sort((a, b) => compareTimes(a, b));
+  pmTimes.sort((a, b) => compareTimes(a, b));
+
+  let finalArr = [...amTimes, ...pmTimes];
+  return finalArr;
+}
+
 function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
   let colorObj;
   if(theme == 'frontEnd') {
@@ -28,7 +65,6 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
       selCol: 'white',
       lasCol: 'black',
     }
-    console.log('Admin pulled' + appointments);
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -46,7 +82,8 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
     items.push(...element);
   });
   let { weekdaysAbbr } = cal;
-  const [drawerText, setDrawerText] = useState('');
+  const [drawerText, setDrawerText] = useState([]);
+  let allAppointments = [];
 
   return (
     <div>
@@ -80,7 +117,6 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                 }
                 lastSelected.style.color = colorObj.lasCol;
                 selected = undefined;
-                console.log(selected);
                 }
                 }
               >
@@ -102,7 +138,6 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                 }
                 lastSelected.style.color = colorObj.lasCol;
                 selected = undefined;
-                console.log(selected);
                 }}
               >
                 <SlArrowRight />
@@ -142,7 +177,6 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
           </Box>;
         }
         let appointmentFound = false;
-        let toolTipAppointment = '';
 
         if(theme === 'backEnd') {
           const itemDay = Number(item);
@@ -150,8 +184,29 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
           appointments.forEach((appointment) => {
             const appDate = new Date(appointment.date);
             if(!(itemDate > appDate) && !(itemDate < appDate)) {
+              let dayIndex = allAppointments.findIndex((value, index) => {
+                return value[0].day === itemDay;
+              });
+
+              let appointmentDay = [];
+              const { timeWindow, firstName, phone, email } = appointment;
+              const entry = {
+                time: timeWindow,
+                first: firstName,
+                phn: phone,
+                eml: email,
+              }
               appointmentFound = true;
-              toolTipAppointment += `Time: -${appointment.firstName}-${appointment.phone}\n-${appointment.email}\n`
+
+              if(dayIndex !== -1) {
+                allAppointments[dayIndex][0].data.push(entry);
+              } else {
+                appointmentDay.push({
+                  day: item,
+                  data: [entry],
+                });
+                allAppointments.push(appointmentDay);
+              }
             }
           });
         }
@@ -184,8 +239,10 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                   ref={btnRef} 
                   onClick={(event) => {
                     onOpen();
-                    setDrawerText(event.target.parentNode.value);
-                  }} 
+                    // setDrawerText(event.target.parentNode.value);
+                    let sortedTimes = timeSort(allAppointments[0][0].data);
+                    setDrawerText(sortedTimes);
+                  }}
                   key={index}
                   onMouseEnter={(event) => {
                     if(!lastSelected) {
@@ -202,8 +259,7 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                   onMouseLeave={() => {
                     lastSelected = undefined;
                     selected.style.color = appCol;
-                  }}
-                  value={toolTipAppointment}>
+                  }}>
                   <Text color={appCol}>
                     {item}
                   </Text>
@@ -218,7 +274,18 @@ function GenerateCalendar({setSelectedDate, theme, appointments, confirm}) {
                   <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerBody>
-                      {drawerText}
+                      <ul>
+                        {
+                          drawerText.map((item) => {
+                            return <li style={{paddingBottom: '1rem'}}>
+                            {item.time}<br></br>
+                            {item.first}<br></br>
+                            {item.phn}<br></br>
+                            {item.eml}<br></br>
+                            </li>
+                          })
+                        }
+                      </ul>
                     </DrawerBody>
                   </DrawerContent>
                 </Drawer>

@@ -118,7 +118,7 @@ function Appointments() {
           (appointments.length !== 0) ? (
             appointments.map((obj, index) => {
             console.log('index is ' + index);
-            const { _id, firstName, lastName, date, phone, email, massage} = obj;
+            const { _id, firstName, lastName, date, phone, email, massage, confirm} = obj;
             return <Box
               borderRadius={'1em'}
               border='1px'
@@ -149,8 +149,17 @@ function Appointments() {
                   </GridItem>
                   <GridItem colSpan={1} alignSelf={'center'} justifySelf={'end'}>
                   {
-                    obj.confirm ? (
+                    confirm ? (
                       <Stack spacing={4} direction='row' align='center'>
+                        <Button 
+                          id={_id}
+                          colorScheme='red' 
+                          variant='outline' 
+                          size={{ sm: "xs", md: "sm", xl: "md" }}
+                          onClick={rejectAppointment}
+                        >
+                          Reject
+                        </Button>
                         <Button colorScheme='blue' size={{ sm: "xs", md: "sm", xl: "md" }}>
                           Confirmed
                         </Button>
