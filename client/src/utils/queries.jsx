@@ -55,6 +55,7 @@ export const GET_ALL_APPOINTMENTS = gql` #graphql
       contactMethod
       confirm
       rejected
+      timeWindow
     }
   }
 `;
@@ -74,6 +75,7 @@ export const GET_UNCONFIRMED_APPOINTMENTS = gql` #graphql
       contactMethod
       confirm
       rejected
+      timeWindow
     }
   }
 `;
